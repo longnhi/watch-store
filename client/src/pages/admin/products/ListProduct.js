@@ -13,7 +13,7 @@ function ListProduct() {
       </div>
       <h2>Sản phẩm</h2>
       <div className="table-responsive">
-        <table className="table table-striped table-sm text-center  align-middle">
+        <table className="table table-striped table-sm text-center align-middle">
           <thead>
             <tr>
               <th scope="col"></th>
@@ -31,7 +31,7 @@ function ListProduct() {
               <td>1.200.000 VNĐ</td>
               <td>Nhật Bản</td>
               <td>Nam</td>
-              <td><a className="btn" href='/admin/brands/edit/1'><i className="fa fa-pencil"  /></a></td>
+              <td><a className="btn" href='/admin/products/edit/1'><i className="fa fa-pencil"  /></a></td>
               <td><a className="btn" href='/'><i className="fa fa-trash"  /></a></td>
             </tr>
             <tr>
@@ -40,7 +40,7 @@ function ListProduct() {
               <td>1.200.000 VNĐ</td>
               <td>Thụy Sỹ</td>
               <td>Nữ</td>
-              <td><a className="btn" href='/admin/brands/edit/2'><i className="fa fa-pencil"  /></a></td>
+              <td><a className="btn" href='/admin/products/edit/2'><i className="fa fa-pencil"  /></a></td>
               <td><a className="btn" href='/'><i className="fa fa-trash"  /></a></td>
             </tr>
             <tr>
@@ -49,7 +49,7 @@ function ListProduct() {
               <td>24.000.000 VNĐ</td>
               <td>Hoa Kỳ</td>
               <td>Nam</td>
-              <td><a className="btn" href='/admin/brands/edit/3'><i className="fa fa-pencil"  /></a></td>
+              <td><a className="btn" href='/admin/products/edit/3'><i className="fa fa-pencil"  /></a></td>
               <td><a className="btn" href='/'><i className="fa fa-trash"  /></a></td>
             </tr>
           </tbody>

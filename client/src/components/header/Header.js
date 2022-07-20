@@ -22,12 +22,6 @@ function Header() {
                                 <a className="nav-link active dropdown-toggle" aria-current="page" href="/" id="dropdown06" data-bs-toggle="dropdown" aria-expanded="false">THƯƠNG HIỆU</a>
                                 <ThuongHieu />
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link active" href="/">NAM</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link active" href="/">NỮ</a>
-                            </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link active dropdown-toggle" href="/" id="dropdown07" data-bs-toggle="dropdown" aria-expanded="false">LOẠI</a>
                                 <Loai />
@@ -36,10 +30,15 @@ function Header() {
                                 <a className="nav-link active" href="/">BẢO HÀNH</a>
                             </li>
                         </ul>
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                        <ul className="navbar-nav mb-2 mb-lg-0">
                             <Search />
                         </ul>
-                        <Account />
+                        <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li className="nav-item">
+                                <a className="nav-link active" aria-current="page" href="/cart"><i className="fa fa-shopping-cart fa-lg" aria-hidden="true"/>&ensp;Giỏ hàng</a>
+                            </li>
+                            <Account />
+                        </ul>
                     </div>
                 </div>
             </nav>

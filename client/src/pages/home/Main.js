@@ -8,7 +8,7 @@ function Main() {
     <>
         <Header />
         <div style={{minHeight:"600px"}}>
-        <Outlet />
+          <Outlet />
         </div>
         <Footer />
     </>

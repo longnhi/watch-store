@@ -1,7 +1,7 @@
 import React from 'react'
+import { Outlet } from 'react-router-dom'
 import HeaderAdmin from '../../../components/header/HeaderAdmin'
 import Sidebar from '../../../components/sidebar/Sidebar'
-import MainAdmin from './MainAdmin'
 
 function HomeAdmin() {
   return (
@@ -10,7 +10,9 @@ function HomeAdmin() {
       <div className="container-fluid">
         <div className="row">
           <Sidebar />
-          <MainAdmin />
+          <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <Outlet />
+          </main>
         </div>
       </div>
     </div>

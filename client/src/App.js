@@ -25,6 +25,10 @@ import OrderDetails from './pages/admin/orders/OrderDetail';
 import ListCustomer from './pages/admin/customers/ListCustomer';
 import ListGuarantee from './pages/admin/guarantees/ListGuarantee';
 import CreateGuarantee from './pages/admin/guarantees/CreateGuarantee';
+import ProductDetail from './pages/products/ProductDetail';
+import Error from './pages/error/Error';
+import ProductByBrand from './pages/products/ProductByBrand';
+import ProductByCategory from './pages/products/ProductByCategory';
 
 function App() {
   return (
@@ -33,6 +37,9 @@ function App() {
         <Route path="/" element={<Main />}>
           <Route path="" element={<Home />} />
           <Route path="products" element={<Products />} />
+          <Route path="products/:masp" element={<ProductDetail />} />
+          <Route path="products/brand/:math" element={<ProductByBrand />} />
+          <Route path="products/category/:maloai" element={<ProductByCategory />} />
           <Route path="search/:name" element={<SearchProduct />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<CheckOut />} />
@@ -57,6 +64,7 @@ function App() {
           <Route path="guarantees" element={<ListGuarantee/>} />
           <Route path="guarantees/create" element={<CreateGuarantee />} />
         </Route>
+        <Route path="*" element={<Error />} />
       </Routes>
     </div>
   );

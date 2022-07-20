@@ -1,23 +1,35 @@
 import React, {useEffect, useState} from 'react'
-import axios from 'axios';
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
 
-function ProductsHome() {
+function ProductByBrand() {
 
-    const [listNewProduct, setListNewProduct] = useState([]);
+    let {math} = useParams();
+    const [brand,setBrand] = useState({});
+    const [listProduct, setListProduct] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/productsnew`).then((res) => { 
-        setListNewProduct(res.data);
-    });
-    },[]);
+        axios.get(`http://localhost:3001/brands/${math}`).then((res) => {
+            setBrand(res.data[0]);
+        });
+        axios.get(`http://localhost:3001/products/brand/${math}`).then((res) => { 
+            setListProduct(res.data);
+        });
+    },[math]);
 
     return (
         <div className="container my-4">
-            <h4 className="text-center">Sản phẩm mới</h4>
+            <nav aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                <li className="breadcrumb-item"><a href="/products">Sản phẩm</a></li>
+                <li className="breadcrumb-item active" aria-current="page">{brand.tenth}</li>
+                </ol>
+            </nav>
             <div className="row">
-            { listNewProduct.map((product) => {
+                { listProduct.map((product) => {
                 return (
-                    <div key={product.masp} className="col-lg-4 p-3">
+                    <div key={product.masp} className="col-lg-3 p-3">
                     <div className="card" style={{width: '100%'}}>
                         <img src={process.env.PUBLIC_URL + product.hinhanh} className="card-img-top" alt="..." />
                         <div className="card-body">
@@ -29,20 +41,16 @@ function ProductsHome() {
                         </ul>
                         <div className="card-body d-flex justify-content-around">
                         <a href="/" className="card-link link-dark"><i className="fa fa-cart-plus fa-2x"/></a>
-                        <a href={`/products/${product.masp}`} className="card-link link-dark stretched-link" style={{position: "relative"}}><i className="fa fa-search fa-2x" /></a>
+                        <a href={`/products/${product.masp}`} className="card-link link-dark"><i className="fa fa-search fa-2x" /></a>
                         <a href="/login" className="card-link link-dark"><i className="fa fa-heart-o fa-2x" /></a>
                         </div>
                     </div>
                     </div>
                 )
-            })}
-                
+                })}
             </div>
-            <div className="text-center my-3">
-                <a className="btn btn-outline-primary" href='/products'>Xem thêm</a>
             </div>
-        </div>
     )
 }
 
-export default ProductsHome
+export default ProductByBrand

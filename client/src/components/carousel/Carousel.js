@@ -10,13 +10,13 @@ function Carousel() {
         </div>
         <div className="carousel-inner">
             <div className="carousel-item active">
-            <img src={process.env.PUBLIC_URL + "./assets/img/banner/img-banner-1.jpg" } className="d-block w-100" style={{height:"700px"}} alt="..." />
+            <img src={process.env.PUBLIC_URL + "./assets/img/banner/img-banner-1.jpg" } className="d-block w-100" style={{height:"600px"}} alt="..." />
             </div>
             <div className="carousel-item">
-            <img src={process.env.PUBLIC_URL + "./assets/img/banner/img-banner-2.jpg" } className="d-block w-100" style={{height:"700px"}} alt="..." />
+            <img src={process.env.PUBLIC_URL + "./assets/img/banner/img-banner-2.jpg" } className="d-block w-100" style={{height:"600px"}} alt="..." />
             </div>
             <div className="carousel-item">
-            <img src={process.env.PUBLIC_URL + "./assets/img/banner/img-banner-3.jpg" } className="d-block w-100" style={{height:"700px"}} alt="..." />
+            <img src={process.env.PUBLIC_URL + "./assets/img/banner/img-banner-3.jpg" } className="d-block w-100" style={{height:"600px"}} alt="..." />
             </div>
         </div>
         <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
