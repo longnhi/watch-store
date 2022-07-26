@@ -22,7 +22,6 @@ function SignIn() {
                 
             </form>
             <button className="w-100 btn btn-lg btn-outline-primary" onClick={()=>{navigate("/", { replace: true });}}>Quay lại</button>
-            <p className="mt-5 mb-3 text-muted">© 2018–2022</p>
         </main>
     )
 }

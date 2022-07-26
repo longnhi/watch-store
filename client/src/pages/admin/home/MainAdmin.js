@@ -23,7 +23,7 @@ function MainAdmin() {
   },[])
 
   return (
-    <>
+    <div hidden>
       <h1>Thương hiệu:</h1>
       {listBrand.map((item) => {
         return (
@@ -42,7 +42,7 @@ function MainAdmin() {
           <p key={item.masp}>{JSON.stringify(item)}</p>
         )
       })}
-    </>
+    </div>
   )
 }
 

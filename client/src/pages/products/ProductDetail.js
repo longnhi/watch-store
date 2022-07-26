@@ -21,7 +21,7 @@ function ProductDetail() {
                 <img src={process.env.PUBLIC_URL + product.hinhanh} className="w-100" alt="..." />
                 </div>
                 <div className="col-md-6 p-4 ps-md-0">
-                    <div className="card">
+                    <div className="card" style={{height: '100%'}}>
                         <div className="card-header text-center">
                             {product.tensp}
                         </div>

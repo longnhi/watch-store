@@ -2,28 +2,38 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 
-function ProductByCategory() {
-
-    let {maloai} = useParams();
-    const [category,setCategory] = useState({});
+function ProductByPrice() {
+    
+    let {price} = useParams();
     const [listProduct, setListProduct] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/categorys/${maloai}`).then((res) => {
-            setCategory(res.data[0]);
-        });
-        axios.get(`http://localhost:3001/products/category/${maloai}`).then((res) => { 
+        axios.get(`http://localhost:3001/products/price/${price}`).then((res) => { 
             setListProduct(res.data);
         });
-    },[maloai]);
+    },[price]);
 
     return (
         <div className="container my-4">
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
-                <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
-                <li className="breadcrumb-item"><a href="/products">Sản phẩm</a></li>
-                <li className="breadcrumb-item active" aria-current="page">{category.tenloai}</li>
+                    <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li className="breadcrumb-item"><a href="/products">Sản phẩm</a></li>
+                    {(() => {
+                        switch(price) {
+                            case '0_1000000':
+                                return <li className="breadcrumb-item active" aria-current="page">Dưới 1.000.000 VNĐ</li>
+                            case '1000000_10000000':
+                                return <li className="breadcrumb-item active" aria-current="page">Từ 1.000.000 - 10.000.000 VNĐ</li>
+                            case '10000000_20000000':
+                                return <li className="breadcrumb-item active" aria-current="page">Từ 10.000.000 - 20.000.000 VNĐ</li>
+                            case '20000000_max':
+                                return <li className="breadcrumb-item active" aria-current="page">Trên 20.000.000 VNĐ</li>
+                            default:
+                                return null
+                            }
+                    })()}
+                    
                 </ol>
             </nav>
             <div className="row">
@@ -53,4 +63,4 @@ function ProductByCategory() {
     )
 }
 
-export default ProductByCategory
+export default ProductByPrice

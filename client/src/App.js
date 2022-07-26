@@ -29,6 +29,7 @@ import ProductDetail from './pages/products/ProductDetail';
 import Error from './pages/error/Error';
 import ProductByBrand from './pages/products/ProductByBrand';
 import ProductByCategory from './pages/products/ProductByCategory';
+import ProductByPrice from './pages/products/ProductByPrice';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="products/:masp" element={<ProductDetail />} />
           <Route path="products/brand/:math" element={<ProductByBrand />} />
           <Route path="products/category/:maloai" element={<ProductByCategory />} />
+          <Route path="products/price/:price" element={<ProductByPrice/>}/>
           <Route path="search/:name" element={<SearchProduct />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<CheckOut />} />
@@ -47,9 +49,9 @@ function App() {
           <Route path="order" element={<Order />} />
           <Route path="order/:madh" element={<OrderDetail />} />
           <Route path="favorite" element={<Favorite />} />
+          <Route path="login" element={<SignIn />} />
+          <Route path="registry" element={<SignUp />} />
         </Route>
-        <Route path="login" element={<SignIn />} />
-        <Route path="registry" element={<SignUp />} />
         <Route path="admin" element={<HomeAdmin />} >
           <Route path="" element={<MainAdmin />}/>
           <Route path="brands" element={<ListBrand/>} />

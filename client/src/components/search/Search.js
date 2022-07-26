@@ -7,7 +7,8 @@ function Search() {
     const [inputSearch, setInputSearch] = useState("")
     let navigate = useNavigate();
 
-    const handleSubmit = () => {
+    const handleSubmit = (event) => {
+        event.preventDefault();
         if(inputSearch===""){
             navigate("/products",{ replace: true });
         }else{

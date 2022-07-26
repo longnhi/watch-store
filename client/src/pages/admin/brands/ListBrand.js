@@ -1,6 +1,21 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useState, useEffect} from 'react'
 
 function ListBrand() {
+
+  const [listBrand, setListBrand] = useState([]);
+
+  useEffect(() => {
+    axios.get(`http://localhost:3001/brands`).then((res) => { 
+      setListBrand(res.data);
+    });
+  },[]);
+
+  const deleteBrand = (math) => {
+    axios.delete(`http://localhost:3001/brands/${math}`);
+    window.location.reload();
+  };
+
   return (
     <div >
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -22,24 +37,16 @@ function ListBrand() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Casio</td>
-              <td><a className="btn" href='/admin/brands/edit/1'><i className="fa fa-pencil"  /></a></td>
-              <td><a className="btn" href='/'><i className="fa fa-trash"  /></a></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Orient</td>
-              <td><a className="btn" href='/admin/brands/edit/2'><i className="fa fa-pencil"  /></a></td>
-              <td><a className="btn" href='/'><i className="fa fa-trash"  /></a></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Citizen</td>
-              <td><a className="btn" href='/admin/brands/edit/3'><i className="fa fa-pencil"  /></a></td>
-              <td><a className="btn" href='/'><i className="fa fa-trash"  /></a></td>
-            </tr>
+            {listBrand.map((brand)=>{
+              return (
+                <tr key={brand.math}>
+                  <td>{brand.math}</td>
+                  <td>{brand.tenth}</td>
+                  <td><a className="btn" href={`/admin/brands/edit/${brand.math}`}><i className="fa fa-pencil"/></a></td>
+                  <td><a className="btn" onClick={()=>{deleteBrand(brand.math)}}><i className="fa fa-trash"/></a></td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>

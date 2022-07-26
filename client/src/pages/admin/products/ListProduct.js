@@ -1,6 +1,16 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import axios from 'axios';
 
 function ListProduct() {
+
+  const [listProduct, setListProduct] = useState([]);
+
+  useEffect(() => {
+    axios.get(`http://localhost:3001/products`).then((res) => { 
+      setListProduct(res.data);
+  });
+  },[]);
+
   return (
     <div >
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -25,33 +35,19 @@ function ListProduct() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><img src={process.env.PUBLIC_URL + '/assets/img/products/CASIO-AE-1200WHD-1AVDF-1.jpg'} style={{width: "100px"}} className="card-img-top" alt="..." /></td>
-              <td>CASIO AE-1200WHD-1AVDF</td>
-              <td>1.200.000 VNĐ</td>
-              <td>Nhật Bản</td>
-              <td>Nam</td>
-              <td><a className="btn" href='/admin/products/edit/1'><i className="fa fa-pencil"  /></a></td>
-              <td><a className="btn" href='/'><i className="fa fa-trash"  /></a></td>
-            </tr>
-            <tr>
-              <td><img src={process.env.PUBLIC_URL + '/assets/img/products/RA-AA0B02R19B-1.jpg'} style={{width: "100px"}} className="card-img-top" alt="..." /></td>
-              <td>Orient RA-AA0B02R19B</td>
-              <td>1.200.000 VNĐ</td>
-              <td>Thụy Sỹ</td>
-              <td>Nữ</td>
-              <td><a className="btn" href='/admin/products/edit/2'><i className="fa fa-pencil"  /></a></td>
-              <td><a className="btn" href='/'><i className="fa fa-trash"  /></a></td>
-            </tr>
-            <tr>
-              <td><img src={process.env.PUBLIC_URL + '/assets/img/products/Citizen-BF2011-51E-1-1627461238909.jpg'} style={{width: "100px"}} className="card-img-top" alt="..." /></td>
-              <td>Citizen-BF2011-51E</td>
-              <td>24.000.000 VNĐ</td>
-              <td>Hoa Kỳ</td>
-              <td>Nam</td>
-              <td><a className="btn" href='/admin/products/edit/3'><i className="fa fa-pencil"  /></a></td>
-              <td><a className="btn" href='/'><i className="fa fa-trash"  /></a></td>
-            </tr>
+            {listProduct.map((product) => {
+              return (
+                <tr key={product.masp}>
+                  <td><img src={process.env.PUBLIC_URL + product.hinhanh} style={{width: "100px"}} className="card-img-top" alt="..." /></td>
+                  <td>{product.tensp}</td>
+                  <td>{product.gia} VNĐ</td>
+                  <td>{product.xuatxu}</td>
+                  <td>{product.gioitinh === 1 ? "Nam" : "Nữ"}</td>
+                  <td><a className="btn" href={`/admin/products/edit/${product.masp}`}><i className="fa fa-pencil"  /></a></td>
+                  <td><a className="btn" href='/'><i className="fa fa-trash"  /></a></td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>

@@ -1,5 +1,6 @@
 import React from 'react'
 import Account from '../account/Account';
+import Gia from '../dropdowns/Gia';
 import Loai from '../dropdowns/Loai';
 import ThuongHieu from '../dropdowns/ThuongHieu';
 import Search from '../search/Search';
@@ -26,8 +27,12 @@ function Header() {
                                 <a className="nav-link active dropdown-toggle" href="/" id="dropdown07" data-bs-toggle="dropdown" aria-expanded="false">LOẠI</a>
                                 <Loai />
                             </li>
+                            <li className="nav-item dropdown">
+                                <a className="nav-link active dropdown-toggle" href="/" id="dropdown08" data-bs-toggle="dropdown" aria-expanded="false">GIÁ</a>
+                                <Gia />
+                            </li>
                             <li className="nav-item">
-                                <a className="nav-link active" href="/">BẢO HÀNH</a>
+                                <a className="nav-link active" hidden href="/">BẢO HÀNH</a>
                             </li>
                         </ul>
                         <ul className="navbar-nav mb-2 mb-lg-0">
