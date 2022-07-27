@@ -1,15 +1,16 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
-function HeaderAdmin() {
+const HeaderAdmin = () => {
   return (
     <header className="navbar navbar-dark  bg-primary flex-md-nowrap p-2 shadow">
-        <a className="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-center" href="/">WATCH STORE</a>
+        <Link className="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-center" to="/">WATCH STORE</Link>
         <button className="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon" />
         </button>
         <div className="navbar-nav">
           <div className="nav-item text-nowrap">
-            <a className="nav-link px-3" href="/">Sign out &ensp;<i className="fa fa-sign-out"/></a>
+            <Link className="nav-link px-3" to="/">Sign out &ensp;<i className="fa fa-sign-out"/></Link>
           </div>
         </div>
     </header>

@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
 
-function UpdateBrand() {
+const UpdateBrand = () => {
 
   let navigate = useNavigate();
   let { math } = useParams();
@@ -38,7 +38,7 @@ function UpdateBrand() {
       
         <button className="w-100 btn btn-lg btn-outline-primary mb-3" onClick={onSubmit}>Sửa</button>
       </div>
-      <a className="w-100 btn btn-lg btn-outline-primary mb-3" href='/admin/brands' >Thoát</a>
+      <Link className="w-100 btn btn-lg btn-outline-primary mb-3" to='/admin/brands' >Thoát</Link>
     </div>
   )
 }

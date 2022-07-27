@@ -36,7 +36,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Main />}>
-          <Route path="" element={<Home />} />
+          <Route index element={<Home />} />
           <Route path="products" element={<Products />} />
           <Route path="products/:masp" element={<ProductDetail />} />
           <Route path="products/brand/:math" element={<ProductByBrand />} />

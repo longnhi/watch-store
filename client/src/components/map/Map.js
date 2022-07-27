@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Map() {
+const Map = () => {
   return (
     <div className="container">
         <h1 className="post-single-title mt-5">Liên hệ với chúng tôi</h1>

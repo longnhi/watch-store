@@ -1,6 +1,7 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
-function Contact() {
+const Contact = () => {
   return (
     <div className="card my-4" style={{backgroundImage: 'url(https://zenwatch.vn/uploads/store-zenwatch-img.jpg)',height: "500px"}}>
         <div className="container text-center text-light my-5"> 
@@ -11,7 +12,7 @@ function Contact() {
                     <h4>NHÀ PHÂN PHỐI CHÍNH HÃNG CÁC THƯƠNG HIỆU ĐỒNG HỒ</h4>
                     <p>Hotline: 0825316954</p><p> Email: nhilong0711@gmail.com</p>
                 </div> 
-                <a href="/lienhe" className="btn btn-outline-primary btn-border btn-round">Địa chỉ</a> 
+                <Link to="/lienhe" className="btn btn-outline-primary btn-border btn-round">Địa chỉ</Link> 
             </div> 
         </div>
     </div>

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useState, useEffect} from 'react'
+import {Link} from 'react-router-dom';
 
-function ThuongHieu() {
+const ThuongHieu = () => {
 
     const [listBrand, setListBrand] = useState([]);
 
@@ -15,7 +16,7 @@ function ThuongHieu() {
         <ul className="dropdown-menu" aria-labelledby="dropdown06">
             { listBrand.map((item)=>{
                 return (
-                    <li key={item.math}><a className="dropdown-item" href={`/products/brand/${item.math}`}>{item.tenth.toUpperCase()}</a></li>
+                    <li key={item.math}><Link className="dropdown-item" to={`/products/brand/${item.math}`}>{item.tenth.toUpperCase()}</Link></li>
                 )
             })}
         </ul>

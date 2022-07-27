@@ -1,6 +1,7 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-function Sidebar() {
+const Sidebar = () => {
     return (
         <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" style={{minHeight: "750px"}}>
             <div className="position-sticky pt-3">
@@ -9,36 +10,38 @@ function Sidebar() {
                 </h6>
                 <ul className="nav flex-column">
                     <li className="nav-item mt-1 mb-1">
-                        <a className="nav-link" href="/admin">
+                        <Link className="nav-link" to="/admin">
                         <i className="fa fa-home fa-lg" aria-hidden="true" />
                             &ensp;Dashboard
-                        </a>
+                        </Link>
                     </li>
                     <li className="nav-item mt-1 mb-1">
-                        <a className="nav-link active" aria-current="page" href="/admin/brands">
+                        <Link className="nav-link active" aria-current="page" to="/admin/brands">
                         <i className="fa fa-list fa-lg"  />&ensp;Quản lý thương hiệu
-                        </a>
+                        </Link>
                     </li>
                     <li className="nav-item mt-1 mb-1">
-                        <a className="nav-link" href="/admin/products"><i className="fa fa-bars fa-lg"  />&ensp;Quản lý sản phẩm</a>
-                        </li>
-                        <li className="nav-item">
-                        <a className="nav-link" href="/admin/orders">
+                        <Link className="nav-link" to="/admin/products">
+                            <i className="fa fa-bars fa-lg"  />&ensp;Quản lý sản phẩm
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/admin/orders">
                             <i className="fa fa-cart-arrow-down fa-lg"  />&ensp;
                             Quản lý đơn hàng
-                        </a>
+                        </Link>
                     </li>
                     <li className="nav-item mt-1 mb-1">
-                    <a className="nav-link" href="/admin/customers">
-                    <i className="fa fa-users"  />&ensp;
-                        Quản lý khách hàng
-                    </a>
+                        <Link className="nav-link" to="/admin/customers">
+                        <i className="fa fa-users"  />&ensp;
+                            Quản lý khách hàng
+                        </Link>
                     </li>
                     <li className="nav-item mt-1 mb-1">
-                    <a className="nav-link" href="/admin/guarantees">
-                    <i className="fa fa-sticky-note-o fa-lg"  />
-                        &ensp;Quản lý bảo hành
-                    </a>
+                        <Link className="nav-link" to="/admin/guarantees">
+                        <i className="fa fa-sticky-note-o fa-lg"  />
+                            &ensp;Quản lý bảo hành
+                        </Link>
                     </li>
                 </ul>
                 

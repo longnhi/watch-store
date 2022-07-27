@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useState, useEffect} from 'react'
+import {Link} from 'react-router-dom';
 
-function ListBrand() {
+const ListBrand = () => {
 
   const [listBrand, setListBrand] = useState([]);
 
@@ -21,9 +22,9 @@ function ListBrand() {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 className="h2">Quản lý thương hiệu</h1>
         <div className="btn-toolbar mb-2 mb-md-0">
-          <a href='/admin/brands/add' className="btn btn-outline-secondary">
+          <Link to='/admin/brands/add' className="btn btn-outline-secondary">
             Thêm thương hiệu
-          </a>
+          </Link>
         </div>
       </div>
       <h2>Thương hiệu</h2>
@@ -42,8 +43,8 @@ function ListBrand() {
                 <tr key={brand.math}>
                   <td>{brand.math}</td>
                   <td>{brand.tenth}</td>
-                  <td><a className="btn" href={`/admin/brands/edit/${brand.math}`}><i className="fa fa-pencil"/></a></td>
-                  <td><a className="btn" onClick={()=>{deleteBrand(brand.math)}}><i className="fa fa-trash"/></a></td>
+                  <td><Link className="btn" to={`/admin/brands/edit/${brand.math}`}><i className="fa fa-pencil"/></Link></td>
+                  <td><Link className="btn" onClick={()=>{deleteBrand(brand.math)}}><i className="fa fa-trash"/></Link></td>
                 </tr>
               )
             })}

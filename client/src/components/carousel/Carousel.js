@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Carousel() {
+const Carousel = () => {
   return (
     <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="true">
         <div className="carousel-indicators">

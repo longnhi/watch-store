@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-function CreateBrand() {
+const CreateBrand = () => {
 
   let navigate = useNavigate();
   const [nameBrand, setNameBrand] = useState("");
@@ -23,7 +23,7 @@ function CreateBrand() {
         </div>
         <button className="w-100 btn btn-lg btn-outline-primary mb-3" onClick={onSubmit}>Thêm</button>
       </div>
-      <a className="w-100 btn btn-lg btn-outline-primary mb-3" href='/admin/brands' >Thoát</a>
+      <Link className="w-100 btn btn-lg btn-outline-primary mb-3" to='/admin/brands' >Thoát</Link>
     </div>
   )
 }

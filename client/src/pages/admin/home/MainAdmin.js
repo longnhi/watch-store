@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react'
 import axios from 'axios'
 
-function MainAdmin() {
+const MainAdmin = () => {
 
   const [listBrand, setListBrand] = useState([]);
   const [listCategory, setListCategory] = useState([]);

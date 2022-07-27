@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ListOrder() {
+const ListOrder = () => {
   return (
     <div>ListOrder</div>
   )

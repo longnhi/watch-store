@@ -1,6 +1,7 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
-function CreateProduct() {
+const CreateProduct = () => {
   return (
     <div className="container text-center my-3" style={{maxWidth: "500px"}}>
       <form >
@@ -55,7 +56,7 @@ function CreateProduct() {
       
         <button className="w-100 btn btn-lg btn-outline-primary mb-3" type="submit">Thêm</button>
       </form>
-      <a className="w-100 btn btn-lg btn-outline-primary mb-3" href='/admin/brands' >Thoát</a>
+      <Link className="w-100 btn btn-lg btn-outline-primary mb-3" to='/admin/brands' >Thoát</Link>
     </div>
   )
 }

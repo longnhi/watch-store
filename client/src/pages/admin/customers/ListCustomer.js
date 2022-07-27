@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ListCustomer() {
+const ListCustomer = () => {
   return (
     <div>ListCustomer</div>
   )

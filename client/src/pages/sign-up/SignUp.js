@@ -3,7 +3,7 @@ import Axios from "axios";
 import './signup.css'
 import { useNavigate } from "react-router-dom";
 
-function SignUp() {
+const SignUp = () => {
 
     let navigate = useNavigate();
 

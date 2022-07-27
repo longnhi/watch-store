@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
-function ListProduct() {
+const ListProduct = () => {
 
   const [listProduct, setListProduct] = useState([]);
 
@@ -16,9 +17,9 @@ function ListProduct() {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 className="h2">Quản lý sản phẩm</h1>
         <div className="btn-toolbar mb-2 mb-md-0">
-          <a href='/admin/products/add' className="btn btn-outline-secondary">
+          <Link to='/admin/products/add' className="btn btn-outline-secondary">
             Thêm sản phẩm
-          </a>
+          </Link>
         </div>
       </div>
       <h2>Sản phẩm</h2>
@@ -43,8 +44,8 @@ function ListProduct() {
                   <td>{product.gia} VNĐ</td>
                   <td>{product.xuatxu}</td>
                   <td>{product.gioitinh === 1 ? "Nam" : "Nữ"}</td>
-                  <td><a className="btn" href={`/admin/products/edit/${product.masp}`}><i className="fa fa-pencil"  /></a></td>
-                  <td><a className="btn" href='/'><i className="fa fa-trash"  /></a></td>
+                  <td><Link className="btn" to={`/admin/products/edit/${product.masp}`}><i className="fa fa-pencil"  /></Link></td>
+                  <td><Link className="btn" to='/'><i className="fa fa-trash"  /></Link></td>
                 </tr>
               )
             })}

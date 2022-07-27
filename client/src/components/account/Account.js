@@ -1,25 +1,26 @@
 import React from 'react'
+import {Link} from 'react-router-dom';
 
-function Account() {
+const Account = () => {
     const isLogin = false; 
     const isAdmin = false;
     return (
         <li className="nav-item dropdown">
-            <a className="nav-link active dropdown-toggle" href="/" id="dropdown07" data-bs-toggle="dropdown" aria-expanded="false">
-                <i className="fa fa-user fa-lg" aria-hidden="true"/>&ensp;Tài khoản</a>
+            <Link className="nav-link active dropdown-toggle" to="/" id="dropdown07" data-bs-toggle="dropdown" aria-expanded="false">
+                <i className="fa fa-user fa-lg" aria-hidden="true"/>&ensp;Tài khoản</Link>
             <ul className="dropdown-menu" aria-labelledby="dropdown07">
             {!isLogin && (
                 <>
-                    <li><a className="dropdown-item" href="/login">Đăng nhập</a></li>
-                    <li><a className="dropdown-item" href="/registry">Đăng ký</a></li>
+                    <li><Link className="dropdown-item" to="/login">Đăng nhập</Link></li>
+                    <li><Link className="dropdown-item" to="/registry">Đăng ký</Link></li>
                 </>
             )} 
             {isLogin && (
                 <>
-                    {isAdmin && (<li><a className="dropdown-item" href="/">Admin</a></li>)}
-                    <li><a className="dropdown-item" href="/order">Đơn hàng</a></li>
-                    <li><a className="dropdown-item" href="/favorite">Yêu thích</a></li>
-                    <li><a className="dropdown-item" href="/">Đăng xuất</a></li>
+                    {isAdmin && (<li><Link className="dropdown-item" to="/">Admin</Link></li>)}
+                    <li><Link className="dropdown-item" to="/order">Đơn hàng</Link></li>
+                    <li><Link className="dropdown-item" to="/favorite">Yêu thích</Link></li>
+                    <li><Link className="dropdown-item" to="/">Đăng xuất</Link></li>
                 </>
             )}
             </ul>

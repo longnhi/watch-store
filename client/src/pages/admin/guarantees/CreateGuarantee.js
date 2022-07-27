@@ -1,6 +1,6 @@
 import React from 'react'
 
-function CreateGuarantee() {
+const CreateGuarantee = () => {
   return (
     <div>CreateGuarantee</div>
   )

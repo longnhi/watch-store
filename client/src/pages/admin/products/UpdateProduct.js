@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
-import { useParams} from 'react-router-dom'
+import { Link, useParams} from 'react-router-dom'
 
-function UpdateProduct() {
+const UpdateProduct = () => {
 
   let { masp } = useParams();
   const [product,setProduct] = useState({});
@@ -90,7 +90,7 @@ function UpdateProduct() {
       
         <button className="w-100 btn btn-lg btn-outline-primary mb-3" type="submit">Sửa</button>
       </form>
-      <a className="w-100 btn btn-lg btn-outline-primary mb-3" href='/admin/brands' >Thoát</a>
+      <Link className="w-100 btn btn-lg btn-outline-primary mb-3" to='/admin/brands' >Thoát</Link>
     </div>
   )
 }

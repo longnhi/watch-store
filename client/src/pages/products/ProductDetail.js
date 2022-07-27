@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
-import { useParams} from 'react-router-dom'
+import { Link, useParams} from 'react-router-dom'
 
 
-function ProductDetail() {
+const ProductDetail = () => {
 
     let { masp } = useParams();
     const [product,setProduct] = useState({});
@@ -36,8 +36,8 @@ function ProductDetail() {
                         
                         </div>
                         <div className="card-footer text-muted d-flex justify-content-center">
-                            <a href="/" className="card-link nav-link link-dark"><i className="fa fa-cart-plus fa-2x"/>&ensp;GIỎ HÀNG</a>
-                            <a href="/login" className="card-link nav-link link-dark"><i className="fa fa-heart-o fa-2x" />&ensp;YÊU THÍCH</a>
+                            <Link to="/" className="card-link nav-link link-dark"><i className="fa fa-cart-plus fa-2x"/>&ensp;GIỎ HÀNG</Link>
+                            <Link to="/login" className="card-link nav-link link-dark"><i className="fa fa-heart-o fa-2x" />&ensp;YÊU THÍCH</Link>
                         </div>
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import Carousel from '../../components/carousel/Carousel'
 import Contact from '../../components/contact/Contact'
 import ProductsHome from './ProductsHome'
 
-function Home() {
+const Home = () => {
   return (
     <>
       <Carousel />

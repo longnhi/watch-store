@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ListGuarantee() {
+const ListGuarantee = () => {
   return (
     <div>ListGuarantee</div>
   )

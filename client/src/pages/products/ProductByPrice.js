@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
-function ProductByPrice() {
+const ProductByPrice = () => {
     
     let {price} = useParams();
     const [listProduct, setListProduct] = useState([]);
@@ -17,8 +17,8 @@ function ProductByPrice() {
         <div className="container my-4">
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
-                    <li className="breadcrumb-item"><a href="/products">Sản phẩm</a></li>
+                    <li className="breadcrumb-item"><Link to="/">Trang chủ</Link></li>
+                    <li className="breadcrumb-item"><Link to="/products">Sản phẩm</Link></li>
                     {(() => {
                         switch(price) {
                             case '0_1000000':
@@ -50,9 +50,9 @@ function ProductByPrice() {
                         <li className="list-group-item">Giá: {product.gia} VNĐ</li>
                         </ul>
                         <div className="card-body d-flex justify-content-around">
-                        <a href="/" className="card-link link-dark"><i className="fa fa-cart-plus fa-2x"/></a>
-                        <a href={`/products/${product.masp}`} className="card-link link-dark"><i className="fa fa-search fa-2x" /></a>
-                        <a href="/login" className="card-link link-dark"><i className="fa fa-heart-o fa-2x" /></a>
+                        <Link to="/" className="card-link link-dark"><i className="fa fa-cart-plus fa-2x"/></Link>
+                        <Link to={`/products/${product.masp}`} className="card-link link-dark"><i className="fa fa-search fa-2x" /></Link>
+                        <Link to="/login" className="card-link link-dark"><i className="fa fa-heart-o fa-2x" /></Link>
                         </div>
                     </div>
                     </div>

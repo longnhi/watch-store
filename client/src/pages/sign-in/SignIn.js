@@ -2,7 +2,7 @@ import React from 'react'
 import './signin.css'
 import { useNavigate } from "react-router-dom";
 
-function SignIn() {
+const SignIn = () => {
     let navigate = useNavigate();
 
     return (

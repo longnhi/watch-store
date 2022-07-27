@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useState, useEffect} from 'react'
+import {Link} from 'react-router-dom';
 
-function Loai() {
+const Loai = () => {
 
     const [listCategory, setListCategory] = useState([]);
 
@@ -15,7 +16,7 @@ function Loai() {
         <ul className="dropdown-menu" aria-labelledby="dropdown07">
             { listCategory.map((item)=>{
                 return (
-                    <li key={item.maloai}><a className="dropdown-item" href={`/products/category/${item.maloai}`}>{item.tenloai.toUpperCase()}</a></li>
+                    <li key={item.maloai}><Link className="dropdown-item" to={`/products/category/${item.maloai}`}>{item.tenloai.toUpperCase()}</Link></li>
                 )
             })}
         </ul>

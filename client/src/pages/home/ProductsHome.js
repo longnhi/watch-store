@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
-function ProductsHome() {
+const ProductsHome = () => {
 
     const [listNewProduct, setListNewProduct] = useState([]);
 
@@ -28,9 +29,9 @@ function ProductsHome() {
                         <li className="list-group-item">Giá: {product.gia} VNĐ</li>
                         </ul>
                         <div className="card-body d-flex justify-content-around">
-                        <a href="/" className="card-link link-dark"><i className="fa fa-cart-plus fa-2x"/></a>
-                        <a href={`/products/${product.masp}`} className="card-link link-dark stretched-link" style={{position: "relative"}}><i className="fa fa-search fa-2x" /></a>
-                        <a href="/login" className="card-link link-dark"><i className="fa fa-heart-o fa-2x" /></a>
+                        <Link to="/" className="card-link link-dark"><i className="fa fa-cart-plus fa-2x"/></Link>
+                        <Link to={`/products/${product.masp}`} className="card-link link-dark stretched-link" style={{position: "relative"}}><i className="fa fa-search fa-2x" /></Link>
+                        <Link to="/login" className="card-link link-dark"><i className="fa fa-heart-o fa-2x" /></Link>
                         </div>
                     </div>
                     </div>
@@ -39,7 +40,7 @@ function ProductsHome() {
                 
             </div>
             <div className="text-center my-3">
-                <a className="btn btn-outline-primary" href='/products'>Xem thêm</a>
+                <Link className="btn btn-outline-primary" to='/products'>Xem thêm</Link>
             </div>
         </div>
     )

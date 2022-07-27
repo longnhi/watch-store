@@ -1,7 +1,7 @@
 import React from 'react'
 import Map from '../../components/map/Map'
 
-function Lienhe() {
+const Lienhe = () => {
   return (
     <div><Map /> </div>
   )

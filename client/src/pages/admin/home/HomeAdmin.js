@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 import HeaderAdmin from '../../../components/header/HeaderAdmin'
 import Sidebar from '../../../components/sidebar/Sidebar'
 
-function HomeAdmin() {
+const HomeAdmin = () => {
   return (
     <div>
       <HeaderAdmin />

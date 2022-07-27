@@ -1,11 +1,12 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
-function Favorite() {
+const Favorite = () => {
   return (
     <div className="container my-4 mb-5">
         <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
-            <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li className="breadcrumb-item"><Link to="/">Trang chủ</Link></li>
             <li className="breadcrumb-item active" aria-current="page">Sản phẩm yêu thích</li>
             </ol>
         </nav>
@@ -24,9 +25,9 @@ function Favorite() {
               <li className="list-group-item">Giá: 1.200.000 VNĐ</li>
             </ul>
             <div className="card-body d-flex justify-content-around">
-              <a href="/" className="card-link link-dark"><i className="fa fa-cart-plus fa-2x"/></a>
-              <a href="/" className="card-link link-dark"><i className="fa fa-search fa-2x" /></a>
-              <a href="/" className="card-link link-dark"><i className="fa fa-heart fa-2x" /></a>
+              <Link to="/" className="card-link link-dark"><i className="fa fa-cart-plus fa-2x"/></Link>
+              <Link to="/" className="card-link link-dark"><i className="fa fa-search fa-2x" /></Link>
+              <Link to="/" className="card-link link-dark"><i className="fa fa-heart fa-2x" /></Link>
             </div>
           </div>
         </div>
@@ -43,9 +44,9 @@ function Favorite() {
               <li className="list-group-item">Giá: 1.200.000 VNĐ</li>
             </ul>
             <div className="card-body d-flex justify-content-around">
-              <a href="/" className="card-link link-dark"><i className="fa fa-cart-plus fa-2x"/></a>
-              <a href="/" className="card-link link-dark"><i className="fa fa-search fa-2x" /></a>
-              <a href="/" className="card-link link-dark"><i className="fa fa-heart fa-2x" /></a>
+              <Link to="/" className="card-link link-dark"><i className="fa fa-cart-plus fa-2x"/></Link>
+              <Link to="/" className="card-link link-dark"><i className="fa fa-search fa-2x" /></Link>
+              <Link to="/" className="card-link link-dark"><i className="fa fa-heart fa-2x" /></Link>
             </div>
           </div>
         </div>

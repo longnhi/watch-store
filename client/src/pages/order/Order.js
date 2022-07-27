@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Order() {
+const Order = () => {
   return (
     <div className="container my-4">
         <nav aria-label="breadcrumb">
