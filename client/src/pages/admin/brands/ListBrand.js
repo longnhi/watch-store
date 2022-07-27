@@ -44,7 +44,7 @@ const ListBrand = () => {
                   <td>{brand.math}</td>
                   <td>{brand.tenth}</td>
                   <td><Link className="btn" to={`/admin/brands/edit/${brand.math}`}><i className="fa fa-pencil"/></Link></td>
-                  <td><Link className="btn" onClick={()=>{deleteBrand(brand.math)}}><i className="fa fa-trash"/></Link></td>
+                  <td><Link className="btn" to="" onClick={()=>{deleteBrand(brand.math)}}><i className="fa fa-trash"/></Link></td>
                 </tr>
               )
             })}

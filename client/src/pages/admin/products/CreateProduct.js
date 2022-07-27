@@ -56,7 +56,7 @@ const CreateProduct = () => {
       
         <button className="w-100 btn btn-lg btn-outline-primary mb-3" type="submit">Thêm</button>
       </form>
-      <Link className="w-100 btn btn-lg btn-outline-primary mb-3" to='/admin/brands' >Thoát</Link>
+      <Link className="w-100 btn btn-lg btn-outline-primary mb-3" to='/admin/products' >Thoát</Link>
     </div>
   )
 }

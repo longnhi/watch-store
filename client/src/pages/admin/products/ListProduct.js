@@ -32,7 +32,7 @@ const ListProduct = () => {
               <th scope="col">Giá</th>
               <th scope="col">Xuất xứ</th>
               <th scope="col">Giới tính</th>
-              <th colSpan={2}>Action</th>
+              <th colSpan={3}>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -44,8 +44,9 @@ const ListProduct = () => {
                   <td>{product.gia} VNĐ</td>
                   <td>{product.xuatxu}</td>
                   <td>{product.gioitinh === 1 ? "Nam" : "Nữ"}</td>
+                  <td><Link className="btn" to={`/admin/products/detail/${product.masp}`}><i className="fa fa-eye"  /></Link></td>
                   <td><Link className="btn" to={`/admin/products/edit/${product.masp}`}><i className="fa fa-pencil"  /></Link></td>
-                  <td><Link className="btn" to='/'><i className="fa fa-trash"  /></Link></td>
+                  <td><Link className="btn" to=''><i className="fa fa-trash"  /></Link></td>
                 </tr>
               )
             })}
