@@ -10,8 +10,9 @@ const Search = () => {
         event.preventDefault();
         if(inputSearch===""){
             navigate("/products",{ replace: true });
-        }else{
-            navigate(`search/${inputSearch}`);
+        }else{  
+            setInputSearch("");
+            navigate(`search/${inputSearch.replace(/\s+/g,' ').trim()}`);
         }
     }
 

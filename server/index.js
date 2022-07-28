@@ -5,15 +5,27 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 
+const db =  require('./config/db');
+
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-const db =  require('./config/db');
+const { createTokens, validateToken } = require("./middleware/JWT");
+const jwt = require("jsonwebtoken");
 
 app.use(express.json());
 app.use(cors());
-app.use(bodyParser.urlencoded({extended:true}));
+
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended:true}));
+
+app.use(session({
+    key: 'user',
+    secret: 'DH51805028',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000*60*60*24 }
+}));
 
 app.get('/', (req,res) => {
     res.json("Hello world!");
@@ -159,32 +171,6 @@ app.get('/products/price/:price', (req, res) => {
 });
 
 //tài khoản
-/*
-app.post("/register", (req, res) => {
-    const email= req.body.email;
-    const password = req.body.password;
-
-    const hoten = req.body.hoten;
-    const sodienthoai = req.body.sodienthoai;
-  
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-        if (err) {
-            console.log(err);
-        }
-        db.query(
-            "INSERT INTO taikhoan (email, password) VALUES (?,?)",
-            [email, hash], (err, result) => {
-                if(err) console.log(err);
-                db.query("INSERT INTO khachhang (hoten,sodienthoai,email) VALUES (?,?,?)", [hoten, sodienthoai, email], (err, result) => {
-                    if(err) console.log(err);
-                });
-            }
-        );
-    
-        
-    });
-    
-});*/
 
 app.post("/register", (req, res) => {
     const email= req.body.email;
@@ -216,6 +202,40 @@ app.post("/register", (req, res) => {
                         );
                     }
                 });
+            }
+        }
+    });
+});
+
+app.get('/auth', validateToken , (req, res) => {
+    try {
+        const payload = jwt.decode(req.headers.accesstoken, "dh51805028");
+        res.json(payload);
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.post('/login', (req, res) => {
+    const email= req.body.email;
+    const password = req.body.password;
+
+    db.query("SELECT * FROM taikhoan WHERE email like ?", email, (err, result) => {
+        if (err) { console.error(err);}
+        else {
+            if (result.length === 0) {
+                return res.json({ err: 1 })
+            } else {
+                bcrypt.compare(password, result[0].password, (err, data) => {
+                    // res == true or res == false
+                    if (err) throw err;
+                    if (data) {
+                        const accessToken = createTokens(result[0].email, result[0].role, result[0].status);
+                        res.json(accessToken);
+                    } else {
+                        res.json({ err: 2 })
+                    }
+                })
             }
         }
     });

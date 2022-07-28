@@ -41,7 +41,12 @@ const Header = () =>  {
                         </ul>
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to="/cart"><i className="fa fa-shopping-cart fa-lg" aria-hidden="true"/>&ensp;Giỏ hàng</Link>
+                                <Link className="nav-link active position-relative" aria-current="page" to="/cart"><i className="fa fa-shopping-cart fa-lg" aria-hidden="true"/>
+                                <span hidden className="position-absolute top-0 start-30 translate-middle badge rounded-pill bg-danger">
+                                    0
+                                    <span className="visually-hidden">unread messages</span>
+                                </span>
+                                &ensp;Giỏ hàng</Link>
                             </li>
                             <Account />
                         </ul>

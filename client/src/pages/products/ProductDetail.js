@@ -1,18 +1,39 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
-import { Link, useParams} from 'react-router-dom'
+import { Link, useNavigate, useParams} from 'react-router-dom'
 
 
 const ProductDetail = () => {
-
     let { masp } = useParams();
     const [product,setProduct] = useState({});
-
+    let navigate = useNavigate();
+    
+    
     useEffect(() => {
         axios.get(`http://localhost:3001/products/${masp}`).then((res) => { 
-            setProduct(res.data[0]);
+            if (res.data.length === 0){
+                navigate(`NOT_FOUND`);
+            }  else {
+                setProduct(res.data[0]);
+            }
         });
-    },[masp]);
+    },[masp,navigate]);
+    
+    const addToCart = () => {
+        /*const newCartItem = {
+            masp: product.masp,
+            tensp: product.tensp,
+            hinhanh: product.hinhanh,
+            gia: product.gia,
+            soluong: 1,
+        }
+        setCartState([...cartState, newCartItem]);*/
+
+    };
+
+    const addFavorite = () => {
+        navigate("/favorite",{ replace: true });
+    };
 
     return (
         <>
@@ -26,8 +47,8 @@ const ProductDetail = () => {
                             {product.tensp}
                         </div>
                         <div className="card-body">
-                        <p className="card-title">Thương hiệu: {product.tenth}</p>
-                        <p className="card-title">Loại: {product.tenloai}</p>
+                        <p className="card-title">Thương hiệu: <Link to={`/products/brand/${product.math}`} className="text-decoration-none">{product.tenth}</Link></p>
+                        <p className="card-title">Loại: <Link to={`/products/category/${product.maloai}`} className="text-decoration-none">{product.tenloai}</Link></p>
                         <p className="card-text">Giá: {product.gia}</p>
                         <p className="card-text">Xuất xứ: {product.xuatxu}</p>
                         <p className="card-text">Giới tính: {product.gioitinh===1 ? "Nam": "Nữ"}</p>
@@ -36,8 +57,8 @@ const ProductDetail = () => {
                         
                         </div>
                         <div className="card-footer text-muted d-flex justify-content-center">
-                            <Link to="/" className="card-link nav-link link-dark"><i className="fa fa-cart-plus fa-2x"/>&ensp;GIỎ HÀNG</Link>
-                            <Link to="/login" className="card-link nav-link link-dark"><i className="fa fa-heart-o fa-2x" />&ensp;YÊU THÍCH</Link>
+                            <button onClick={addToCart} className="card-link btn link-dark"><i className="fa fa-cart-plus fa-2x"/>&ensp;GIỎ HÀNG</button>
+                            <button onClick={addFavorite} className="card-link btn link-dark"><i className="fa fa-heart-o fa-2x" />&ensp;YÊU THÍCH</button>
                         </div>
                     </div>
                 </div>

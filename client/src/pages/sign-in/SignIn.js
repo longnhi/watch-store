@@ -1,21 +1,49 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './signin.css'
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const SignIn = () => {
     let navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [checkUserFail, setCheckUserFail] = useState(false);
+
+    const login = async(e) => {
+        e.preventDefault();
+        await axios.post("http://localhost:3001/login", {
+            email: email,
+            password: password
+        }).then((res) => {
+            if(res.data.err){
+                setCheckUserFail(true);
+            }else {
+                sessionStorage.setItem("accessToken", res.data);
+                navigate("/", { replace: true });
+                window.location.reload();
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
+    };
 
     return (
         <main className="form-signin w-100 m-auto text-center">
-            <form>
+            <form onSubmit={login}>
                 <img className="mb-4" src={process.env.PUBLIC_URL + '/logo.jpg'} alt="" width={72} height={72} />
                 <h1 className="h3 mb-3 fw-normal">Đăng nhập</h1>
+                {checkUserFail && (
+                    <div className="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Email hoặc mật khẩu không chính xác</strong>
+                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => {setCheckUserFail(false);}}></button>
+                    </div>
+                )}
                 <div className="form-floating">
-                    <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" />
+                    <input type="email" required className="form-control" id="floatingInput" placeholder="name@example.com" onChange={(e) => {setEmail(e.target.value);}} value={email}/>
                     <label htmlFor="floatingInput">Email address</label>
                 </div>
                 <div className="form-floating">
-                    <input type="password" className="form-control" id="floatingPassword" placeholder="Password" />
+                    <input type="password" required className="form-control" id="floatingPassword" placeholder="Password" onChange={(e) => {setPassword(e.target.value);}} value={password}/>
                     <label htmlFor="floatingPassword">Password</label>
                 </div>
                 <button className="w-100 btn btn-lg btn-outline-primary mb-3" type="submit">Đăng nhập</button>

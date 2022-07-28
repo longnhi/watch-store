@@ -11,7 +11,7 @@ const SignUp = () => {
     const [password, setPassword] = useState("");
     const [hoten, setHoten] = useState("");
     const [sodienthoai, setSoDienThoai] = useState("");
-    const [checkEmail, setCheckEmail] = useState(false);
+    const [checkEmailExist, setCheckEmailExist] = useState(false);
 
     const register = (event) => {
         event.preventDefault();
@@ -21,10 +21,10 @@ const SignUp = () => {
             hoten: hoten,
             sodienthoai: sodienthoai,
         }).then((res) => {
-            if(res.data.statusCode ===1){
-                setCheckEmail(true);
-            }else if(res.data.statusCode ===2){
-                setCheckEmail(false);
+            if(res.data.statusCode === 1){
+                setCheckEmailExist(true);
+            }else if(res.data.statusCode === 2){
+                setCheckEmailExist(false);
                 navigate("/login",{ replace: true });
             }
         }).catch((e) => {
@@ -38,10 +38,10 @@ const SignUp = () => {
             <form onSubmit={register}>
                 <img className="mb-4" src={process.env.PUBLIC_URL + '/logo.jpg'} alt="" width={72} height={57} />
                 <h1 className="h3 mb-3 fw-normal">Đăng ký</h1>
-                {checkEmail && (
+                {checkEmailExist && (
                     <div className="alert alert-warning alert-dismissible fade show" role="alert">
                         <strong>Email đã tồn tại</strong>
-                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => {setCheckEmailExist(false);}}></button>
                     </div>
                 )}
                 <div className="form-floating mb-3">
@@ -64,7 +64,6 @@ const SignUp = () => {
                 
             </form>
             <button className="w-100 btn btn-lg btn-outline-primary" onClick={()=>{navigate("/", { replace: true });}}>Quay lại</button>
-            
         </main>
     )
 }

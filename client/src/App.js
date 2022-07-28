@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Home from './pages/home/Home';
 import Main from './pages/home/Main';
 import Products from './pages/products/Products';
@@ -30,10 +30,51 @@ import Error from './pages/error/Error';
 import ProductByBrand from './pages/products/ProductByBrand';
 import ProductByCategory from './pages/products/ProductByCategory';
 import ProductByPrice from './pages/products/ProductByPrice';
+import ProductDetailAdmin from './pages/admin/products/ProductDetailAdmin';
+import { AuthContext } from "./context/AuthContext";
+import axios from 'axios';
 
 function App() {
+
+  const [authState, setAuthState] = useState({
+    email: "",
+    role: "",
+    status: 0,
+    isLogin:false
+  });
+
+  //const [cartState, setCartState] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/auth/", {
+        headers: {
+          accessToken: sessionStorage.getItem("accessToken"),
+        },
+      }).then((response) => {
+        if (response.data.error) {
+          setAuthState({ ...authState, status: false });
+        } else {
+          setAuthState({
+            email: response.data.email,
+            role: response.data.role,
+            status: response.data.status,
+            isLogin: true
+          });
+        }
+      });
+  }, [authState]);
+
+  function Redirect({ to }) {
+    let navigate = useNavigate();
+    useEffect(() => {
+      navigate(to);
+    });
+    return null;
+  }
+
   return (
     <div className="App">
+      <AuthContext.Provider value={{ authState, setAuthState }}>
       <Routes>
         <Route path="/" element={<Main />}>
           <Route index element={<Home />} />
@@ -44,14 +85,15 @@ function App() {
           <Route path="products/price/:price" element={<ProductByPrice/>}/>
           <Route path="search/:name" element={<SearchProduct />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="checkout" element={<CheckOut />} />
+          <Route path="checkout" element={(authState.isLogin===true)?<CheckOut />:<Redirect to="/login" />} />
           <Route path="lienhe" element={<Lienhe />} />
           <Route path="order" element={<Order />} />
           <Route path="order/:madh" element={<OrderDetail />} />
-          <Route path="favorite" element={<Favorite />} />
-          <Route path="login" element={<SignIn />} />
-          <Route path="registry" element={<SignUp />} />
+          <Route path="favorite" element={(authState.isLogin===true)?<Favorite />:<Redirect to="/login" />} />
+          <Route path="login" element={(authState.isLogin===false)?<SignIn />:<Redirect to="/" />} />
+          <Route path="registry" element={(authState.isLogin===false)?<SignUp />:<Redirect to="/" />} />
         </Route>
+        { authState.isLogin===true && authState.role==="admin" && 
         <Route path="admin" element={<HomeAdmin />} >
           <Route path="" element={<MainAdmin />}/>
           <Route path="brands" element={<ListBrand/>} />
@@ -60,14 +102,17 @@ function App() {
           <Route path="products" element={<ListProduct/>} />
           <Route path="products/add" element={<CreateProduct />} />
           <Route path="products/edit/:masp" element={<UpdateProduct />} />
+          <Route path="products/detail/:masp" element={<ProductDetailAdmin />} />
           <Route path="orders" element={<ListOrder/>} />
           <Route path="orders/details/:madh" element={<OrderDetails />} />
           <Route path="customers" element={<ListCustomer/>} />
           <Route path="guarantees" element={<ListGuarantee/>} />
           <Route path="guarantees/create" element={<CreateGuarantee />} />
         </Route>
+        }
         <Route path="*" element={<Error />} />
       </Routes>
+      </AuthContext.Provider>
     </div>
   );
 }
