@@ -96,7 +96,7 @@ app.get('/products/', (req, res) => {
 });
 
 app.get('/productsnew/', (req, res) => {
-    db.query("SELECT * FROM sanpham order by masp desc limit 3", (err, result)=>{
+    db.query("SELECT * FROM sanpham order by masp desc limit 4", (err, result)=>{
         if (err) { console.log(err); }
         res.json(result);
     })

@@ -9,7 +9,8 @@ const Cart = () => {
     const [gia, setGia] = useState(0);
 
     useEffect(() => {
-       setCartState([...cartState,{masp:"1",soluong:1,gia:1000000}]);
+       setCartState([{masp:"1",soluong:1,gia:1000000}]);
+       setGia(1000000);
     }, []);
     return (
         <div className="container my-4 mb-5">

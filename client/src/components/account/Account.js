@@ -1,4 +1,4 @@
-import React, {useContext,} from 'react'
+import React, {useContext} from 'react'
 import {Link, useNavigate} from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -26,7 +26,7 @@ const Account = () => {
                 <>
                     <li><Link className="dropdown-item" to="/order">Đơn hàng</Link></li>
                     <li><Link className="dropdown-item" to="/favorite">Yêu thích</Link></li>
-                    <li><a className="dropdown-item" onClick={logout}>Đăng xuất</a></li>
+                    <li><a className="dropdown-item" href='/' onClick={logout}>Đăng xuất</a></li>
                 </>
             )}
             </ul>
