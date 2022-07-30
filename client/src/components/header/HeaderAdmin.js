@@ -7,7 +7,7 @@ const HeaderAdmin = () => {
   let navigate = useNavigate();
   const { setAuthState } = useContext(AuthContext);
   const logout = () => {
-    sessionStorage.removeItem("accessToken");
+    localStorage.removeItem("accessToken");
     setAuthState({ email: "", role: "", status: 0 , isLogin: false });
     navigate('/login', {replace: true});
     window.location.reload();

@@ -1,7 +1,8 @@
-import React, {  useState } from "react";
+import React, {  useState, useContext } from "react";
 import Axios from "axios";
 import './signup.css'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import { AuthContext } from '../../context/AuthContext';
 
 const SignUp = () => {
 
@@ -12,6 +13,12 @@ const SignUp = () => {
     const [hoten, setHoten] = useState("");
     const [sodienthoai, setSoDienThoai] = useState("");
     const [checkEmailExist, setCheckEmailExist] = useState(false);
+
+    const { authState } = useContext(AuthContext);
+
+    if(authState.isLogin){
+        return (<Navigate to="/" replace={true} />)
+    }
 
     const register = (event) => {
         event.preventDefault();

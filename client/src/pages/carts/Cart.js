@@ -1,17 +1,24 @@
-import React, {useEffect, useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useEffect, useState} from 'react'
+import {Link, useNavigate} from 'react-router-dom'
 import CartItem from './CartItem'
+import CartTotal from './CartTotal'
 
 const Cart = () => {
 
-    const [cartState, setCartState] = useState([]);
-    
-    const [gia, setGia] = useState(0);
+    const [cart, setCart] = useState([]);
+    let navigate = useNavigate();
 
     useEffect(() => {
-       setCartState([{masp:"1",soluong:1,gia:1000000}]);
-       setGia(1000000);
-    }, []);
+        let stogare = JSON.parse(localStorage.getItem('cart'));
+        if (stogare) {
+            setCart(stogare);
+        }
+    },[]);
+
+    const removeCartItem = () => {
+        window.location.reload();
+    }
+
     return (
         <div className="container my-4 mb-5">
             <nav aria-label="breadcrumb">
@@ -20,7 +27,7 @@ const Cart = () => {
                     <li className="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
                 </ol>
             </nav>
-            {(!cartState) ? (<>Chưa có sản phẩm trong giỏ hàng</>):(<>
+            {(cart.length === 0) ? (<>Chưa có sản phẩm trong giỏ hàng</>):(<>
             <table className="table text-center align-middle">
                 <thead>
                     <tr>
@@ -32,22 +39,22 @@ const Cart = () => {
                     </tr>
                 </thead>
                 <tbody >
-                    {cartState.map((cartItem) =>{
-                        return (<tr key={cartItem.masp}>
-                            <CartItem masp={cartItem.masp} />
+                    {cart.map((cartItem) =>{
+                        return (<tr key={cartItem.product.masp}>
+                            <CartItem masp={cartItem.product.masp} product={cartItem.product} soluong={cartItem.soluong} removeCartItem={removeCartItem} setCart={setCart} />
                         </tr>)
                     })}
                     <tr>
                         <td colSpan="3">Tổng tiền</td>
-                        <td>{gia} VNĐ</td>
+                        <CartTotal cart={cart} />
                         <td></td>
                     </tr>
                 </tbody>
             </table>
             <div className='text-center'>
-                <Link className='btn btn-primary' to='/checkout'>Thanh toán</Link>
+                <button className='btn btn-primary' onClick={() => {navigate('/checkout',{replace: true })}} >Thanh toán</button>
             </div>
-            </>)}
+                </>)}
         </div>
     )
 }

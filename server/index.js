@@ -241,6 +241,48 @@ app.post('/login', (req, res) => {
     });
 });
 
+// order 
+
+app.post('/order/pay', validateToken, (req, res) => {
+    let cart = req.body.cart
+    let nguoinhan = req.body.nguoinhan;
+    let diachinhan = req.body.diachinhan;
+    let sodienthoai = req.body.sodienthoai;
+    try {
+        const payload = jwt.decode(req.headers.accesstoken, "dh51805028");
+        db.query("SELECT makh FROM khachhang where email like ? ", payload.email, (err, data)=>{
+            if (err) { console.log(err); }
+            else {
+                let makh = data[0].makh; 
+                let madh = "";
+                let possible = "0123456789";
+                for (let i = 0; i < 10; i++)
+                madh += possible.charAt(Math.floor(Math.random() * possible.length));
+
+                db.query("INSERT INTO donhang(madh, nguoinhan,diachinhan,sodienthoai,trangthai,makh) VALUES (?, ?, ?, ?, ?, ?)", [madh, nguoinhan,diachinhan,sodienthoai,"Đang xử lý", makh], (err, result)=>{
+                    if (err) { console.log(err); }
+                    else {
+                        //let madh = result.insertId;
+                        cart.forEach(cartItem => {
+                            db.query("INSERT INTO chitietdonhang(madh,masp,soluong,gia) values (?, ?, ?, ?)",[madh,cartItem.product.masp,cartItem.soluong,cartItem.product.gia], (err, response)=>{
+                                if (err) { console.log(err); }
+                            })
+                        });
+                        res.json({message:"success"});
+                    }
+                });
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
+    //res.json(cart);
+
+});
+
+app.get('orders', validateToken, (req, res) => {
+    
+})
 app.listen(3001, () => {
     console.log("Server running on port 3001");
 });

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route,  Navigate } from 'react-router-dom';
 import Home from './pages/home/Home';
 import Main from './pages/home/Main';
 import Products from './pages/products/Products';
@@ -43,16 +43,14 @@ function App() {
     isLogin:false
   });
 
-  //const [cartState, setCartState] = useState([]);
-
   useEffect(() => {
     axios.get("http://localhost:3001/auth/", {
         headers: {
-          accessToken: sessionStorage.getItem("accessToken"),
+          accessToken: localStorage.getItem("accessToken"),
         },
       }).then((response) => {
         if (response.data.error) {
-          setAuthState({ ...authState, status: false });
+
         } else {
           setAuthState({
             email: response.data.email,
@@ -64,19 +62,11 @@ function App() {
       });
   }, [authState]);
 
-  function Redirect({ to }) {
-    let navigate = useNavigate();
-    useEffect(() => {
-      navigate(to);
-    });
-    return null;
-  }
-
   return (
     <div className="App">
       <AuthContext.Provider value={{ authState, setAuthState }}>
       <Routes>
-        <Route path="/" element={<Main />}>
+        <Route path="/" element={(authState.isLogin===true && authState.role === "admin")?<Navigate to="/admin" replace={ true } />:<Main />}>
           <Route index element={<Home />} />
           <Route path="products" element={<Products />} />
           <Route path="products/:masp" element={<ProductDetail />} />
@@ -85,13 +75,16 @@ function App() {
           <Route path="products/price/:price" element={<ProductByPrice/>}/>
           <Route path="search/:name" element={<SearchProduct />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="checkout" element={(authState.isLogin===true)?<CheckOut />:<Redirect to="/login" />} />
+          <Route path="checkout" element={<CheckOut />} />
           <Route path="lienhe" element={<Lienhe />} />
           <Route path="order" element={<Order />} />
           <Route path="order/:madh" element={<OrderDetail />} />
-          <Route path="favorite" element={(authState.isLogin===true)?<Favorite />:<Redirect to="/login" />} />
-          <Route path="login" element={(authState.isLogin===false)?<SignIn />:<Redirect to="/" />} />
-          <Route path="registry" element={(authState.isLogin===false)?<SignUp />:<Redirect to="/" />} />
+          <Route path="favorite" element={<Favorite />} />
+          <Route path="login" element={<SignIn />} />
+          <Route path="registry" element={<SignUp />} />
+          <Route path="favorite" element={<Favorite />} />
+          <Route path="login" element={<SignIn />} />
+          <Route path="registry" element={<SignUp />}/>
         </Route>
         { authState.isLogin===true && authState.role==="admin" && 
         <Route path="admin" element={<HomeAdmin />} >

@@ -1,29 +1,57 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 
 const CartItem = (props) => {
     let masp = props.masp;
-    const [product,setProduct] = useState({});
+    const [product,setProduct] = useState(props.product);
     let navigate = useNavigate();
+    const [soluong, setSoluong] = useState(props.soluong);
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/products/${masp}`).then((res) => { 
+        
+        axios.get(`http://localhost:3001/products/${props.product.masp}`).then((res) => { 
             if (res.data.length === 0){
                 navigate(`NOT_FOUND`);
             }  else {
+                let cart = localStorage.getItem('cart')  ? JSON.parse(localStorage.getItem('cart')) : [];
+                let cartItem = cart.find(item => item.product.masp === parseInt(props.product.masp));
+                cartItem.product = res.data[0];
+                localStorage.setItem('cart', JSON.stringify(cart));
+                props.setCart(JSON.parse(localStorage.getItem('cart')));
                 setProduct(res.data[0]);
             }
         });
-    },[masp,navigate]);
+    },[props,navigate]);
+
+    const removeCartItem = () => {
+        let cart = localStorage.getItem('cart')  ? JSON.parse(localStorage.getItem('cart')) : [];
+        cart = cart.filter(cartItem => cartItem.product.masp !== masp);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        props.removeCartItem();
+    };
+
+    const onChange = (e) => {
+        let cart = localStorage.getItem('cart')  ? JSON.parse(localStorage.getItem('cart')) : [];
+        let cartItem = cart.find(item => item.product.masp === parseInt(masp));
+        if(e.target.value <1){
+            setSoluong(1);
+            cartItem.soluong = 1;
+        }else {
+            setSoluong(e.target.value);
+            cartItem.soluong = e.target.value;
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        props.setCart(JSON.parse(localStorage.getItem('cart')));
+    };
 
     return (
         <>
-            <td><img src={process.env.PUBLIC_URL + product.hinhanh} style={{width: "100px"}} className="card-img-top" alt="..." /></td>
-            <td>{product.tensp}</td>
-            <td><input type="number"  style={{width: "40px"}} defaultValue="1"></input></td>
-            <td>{product.gia} VNĐ</td>
-            <td><Link className='btn btn-outline-success' to=''><i className="fa fa-trash"></i></Link></td>
+            <td><a href ={`/products/${masp}`}><img src={process.env.PUBLIC_URL + product.hinhanh} style={{width: "100px"}} className="card-img-top" alt="..." /></a></td>
+            <td><a href ={`/products/${masp}`} className="text-decoration-none">{product.tensp}</a></td>
+            <td><input type="number"  style={{width: "40px"}} value={soluong} onChange={onChange}></input></td>
+            <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.gia*soluong)} </td>
+            <td><button className='btn btn-outline-success' onClick={removeCartItem}><i className="fa fa-trash"></i></button></td>
         </>
     )
 }

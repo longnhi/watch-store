@@ -1,34 +1,69 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
+import React, { useContext, useState} from 'react'
+import {Link, Navigate, useNavigate} from 'react-router-dom'
+import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext';
 
 const CheckOut = () => {
+  const { authState } = useContext(AuthContext);
+  const [nguoiNhan, setNguoiNhan] = useState("");
+  const [diaChiNhan, setDiaChiNhan] = useState("");
+  const [soDienThoai, setSoDienThoai] = useState("");
+  const cart = JSON.parse(localStorage.getItem("cart"));
 
+  let navigate = useNavigate();
+
+  if(!authState.isLogin){
+      return (<Navigate to="/login" replace={true} />)
+  }
+
+  if(JSON.parse(localStorage.getItem('cart')).length === 0){
+    return (<Navigate to="/cart" replace={true} />)
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    axios.post("http://localhost:3001/order/pay", {
+      nguoinhan: nguoiNhan,
+      diachinhan: diaChiNhan,
+      sodienthoai: soDienThoai,
+      cart: cart,
+    },{
+      headers: { accessToken: localStorage.getItem("accessToken") },
+    }).then((res) => {
+        localStorage.removeItem("cart");
+        navigate("/cart", { replace: true });
+    }).catch((e) => {
+        console.log(e);
+    });
+  };
+  
   return (
-    <div className="container text-center my-3" style={{maxWidth: "500px"}}>
-      <nav aria-label="breadcrumb">
-        <ol className="breadcrumb">
-          <li className="breadcrumb-item"><Link to="/">Trang chủ</Link></li>
-          <li className="breadcrumb-item active" aria-current="page">Đặt hàng</li>
-        </ol>
-    </nav>
-    <form >
-      <h1 className="h3 mb-3 fw-normal">Đặt hàng</h1>
-      <div className="form-floating mb-3">
-          <input type="text" className="form-control" id="fullname" placeholder="Họ tên" />
-          <label htmlFor="fullname">Họ tên người nhận</label>
-      </div>
-      <div className="form-floating mb-3">
-          <input type="text" className="form-control" id="phone" placeholder="Số điện thoại" />
-          <label htmlFor="phone">Số điện thoại</label>
-      </div>
-      <div className="form-floating mb-3">
-          <input type="text" className="form-control" id="floatingInput" placeholder="180 Cao Lỗ" />
-          <label htmlFor="floatingInput">Địa chỉ nhận</label>
-      </div>
-      <button className="w-100 btn btn-lg btn-outline-primary mb-3" type="submit">Đặt hàng</button>
-      
-  </form>
-  </div>
+    <>
+      <div className="container text-center my-3" style={{maxWidth: "500px"}}>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item"><Link to="/">Trang chủ</Link></li>
+            <li className="breadcrumb-item active" aria-current="page">Đặt hàng</li>
+          </ol>
+      </nav>
+      <form onSubmit={onSubmit}>
+        <h1 className="h3 mb-3 fw-normal">Đặt hàng</h1>
+        <div className="form-floating mb-3">
+            <input required type="text" className="form-control" id="fullname" value={nguoiNhan}  placeholder="Họ tên" onChange={(e) => {setNguoiNhan(e.target.value)}} />
+            <label htmlFor="fullname">Họ tên người nhận</label>
+        </div>
+        <div className="form-floating mb-3">
+            <input required type="text" className="form-control" id="phone" value={diaChiNhan} placeholder="Số điện thoại" onChange={(e) => {setDiaChiNhan(e.target.value)}} />
+            <label htmlFor="phone">Số điện thoại</label>
+        </div>
+        <div className="form-floating mb-3">
+            <input required type="text" className="form-control" id="floatingInput" value={soDienThoai} placeholder="180 Cao Lỗ" onChange={(e) => {setSoDienThoai(e.target.value)}} />
+            <label htmlFor="floatingInput">Địa chỉ nhận</label>
+        </div>
+        <button className="w-100 btn btn-lg btn-outline-primary mb-3" type="submit">Đặt hàng</button>
+      </form>
+    </div>
+    </>
   )
 }
 

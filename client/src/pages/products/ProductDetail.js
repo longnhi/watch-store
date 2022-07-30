@@ -7,8 +7,7 @@ const ProductDetail = () => {
     let { masp } = useParams();
     const [product,setProduct] = useState({});
     let navigate = useNavigate();
-    
-    
+
     useEffect(() => {
         axios.get(`http://localhost:3001/products/${masp}`).then((res) => { 
             if (res.data.length === 0){
@@ -20,15 +19,16 @@ const ProductDetail = () => {
     },[masp,navigate]);
     
     const addToCart = () => {
-        /*const newCartItem = {
-            masp: product.masp,
-            tensp: product.tensp,
-            hinhanh: product.hinhanh,
-            gia: product.gia,
-            soluong: 1,
+        let cart = localStorage.getItem('cart')  ? JSON.parse(localStorage.getItem('cart')) : [];
+        let cartItem = cart.find(item => item.product.masp === parseInt(masp));
+        if(cartItem){
+            cartItem.soluong+=1;
+        }else{
+            cart.push({product: product, soluong: 1});
         }
-        setCartState([...cartState, newCartItem]);*/
-
+        localStorage.setItem('cart', JSON.stringify(cart));
+        navigate('/cart',{replace: true});
+        window.location.reload();
     };
 
     const addFavorite = () => {
@@ -49,7 +49,7 @@ const ProductDetail = () => {
                         <div className="card-body">
                         <p className="card-title">Thương hiệu: <Link to={`/products/brand/${product.math}`} className="text-decoration-none">{product.tenth}</Link></p>
                         <p className="card-title">Loại: <Link to={`/products/category/${product.maloai}`} className="text-decoration-none">{product.tenloai}</Link></p>
-                        <p className="card-text">Giá: {product.gia}</p>
+                        <p className="card-text">Giá: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.gia)}</p>
                         <p className="card-text">Xuất xứ: {product.xuatxu}</p>
                         <p className="card-text">Giới tính: {product.gioitinh===1 ? "Nam": "Nữ"}</p>
                         <p className="card-text">Bảo hành: {product.baohanh}</p>
@@ -57,8 +57,8 @@ const ProductDetail = () => {
                         
                         </div>
                         <div className="card-footer text-muted d-flex justify-content-center">
-                            <button onClick={addToCart} className="card-link btn link-dark"><i className="fa fa-cart-plus fa-2x"/>&ensp;GIỎ HÀNG</button>
-                            <button onClick={addFavorite} className="card-link btn link-dark"><i className="fa fa-heart-o fa-2x" />&ensp;YÊU THÍCH</button>
+                            <button onClick={() => {addToCart()}} className="card-link btn link-dark"><i className="fa fa-cart-plus fa-2x"/>&ensp;GIỎ HÀNG</button>
+                            <button onClick={() => {addFavorite()}} className="card-link btn link-dark"><i className="fa fa-heart-o fa-2x" />&ensp;YÊU THÍCH</button>
                         </div>
                     </div>
                 </div>

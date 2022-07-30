@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, {useContext,  useState} from 'react'
 import './signin.css'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext';
 
 const SignIn = () => {
     let navigate = useNavigate();
@@ -9,16 +10,22 @@ const SignIn = () => {
     const [password, setPassword] = useState("");
     const [checkUserFail, setCheckUserFail] = useState(false);
 
-    const login = async(e) => {
+    const { authState } = useContext(AuthContext);
+
+    if(authState.isLogin){
+        return (<Navigate to="/" replace={true} />)
+    }
+    
+    const login = (e) => {
         e.preventDefault();
-        await axios.post("http://localhost:3001/login", {
+        axios.post("http://localhost:3001/login", {
             email: email,
             password: password
         }).then((res) => {
             if(res.data.err){
                 setCheckUserFail(true);
             }else {
-                sessionStorage.setItem("accessToken", res.data);
+                localStorage.setItem("accessToken", res.data);
                 navigate("/", { replace: true });
                 window.location.reload();
             }
@@ -26,8 +33,8 @@ const SignIn = () => {
             console.log(e);
         });
     };
-
     return (
+        <>
         <main className="form-signin w-100 m-auto text-center">
             <form onSubmit={login}>
                 <img className="mb-4" src={process.env.PUBLIC_URL + '/logo.jpg'} alt="" width={72} height={72} />
@@ -51,6 +58,7 @@ const SignIn = () => {
             </form>
             <button className="w-100 btn btn-lg btn-outline-primary" onClick={()=>{navigate("/", { replace: true });}}>Quay lại</button>
         </main>
+        </>
     )
 }
 

@@ -1,12 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import Product from './Product';
 
 const ProductList = (props) => {
-    const [listProduct,setListProduct] = useState([]);
+    let listProduct = props.listProduct;
 
-    useEffect(() => {
-        setListProduct(props.listProduct);
-    },[listProduct,props]);
 
     return (
         <div className="row">

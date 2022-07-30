@@ -4,17 +4,16 @@ import { AuthContext } from '../../context/AuthContext';
 
 const Account = () => {
     let navigate = useNavigate();
-    const { authState, setAuthState } = useContext(AuthContext);
+    const { authState } = useContext(AuthContext);
     const logout = () => {
-        sessionStorage.removeItem("accessToken");
-        setAuthState({ email: "", role: "", status: 0 , isLogin: false });
+        localStorage.removeItem("accessToken");
         navigate('/login', {replace: true});
         window.location.reload();
     };
     return (
         <li className="nav-item dropdown">
             <Link className="nav-link active dropdown-toggle" to="/" id="dropdown07" data-bs-toggle="dropdown" aria-expanded="false">
-                <i className="fa fa-user fa-lg" aria-hidden="true"/>&ensp;Tài khoản</Link>
+                <i className="fa fa-user fa-lg" aria-hidden="true"/>&ensp;<>Tài khoản</></Link>
             <ul className="dropdown-menu" aria-labelledby="dropdown07">
             {!authState.isLogin && (
                 <>
