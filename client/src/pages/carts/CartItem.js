@@ -1,18 +1,15 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
-import { useNavigate} from 'react-router-dom'
+import {Link} from 'react-router-dom';
 
 const CartItem = (props) => {
     let masp = props.masp;
     const [product,setProduct] = useState(props.product);
-    let navigate = useNavigate();
     const [soluong, setSoluong] = useState(props.soluong);
 
     useEffect(() => {
-        
         axios.get(`http://localhost:3001/products/${props.product.masp}`).then((res) => { 
             if (res.data.length === 0){
-                navigate(`NOT_FOUND`);
             }  else {
                 let cart = localStorage.getItem('cart')  ? JSON.parse(localStorage.getItem('cart')) : [];
                 let cartItem = cart.find(item => item.product.masp === parseInt(props.product.masp));
@@ -22,7 +19,7 @@ const CartItem = (props) => {
                 setProduct(res.data[0]);
             }
         });
-    },[props,navigate]);
+    },[props]);
 
     const removeCartItem = () => {
         let cart = localStorage.getItem('cart')  ? JSON.parse(localStorage.getItem('cart')) : [];
@@ -47,8 +44,8 @@ const CartItem = (props) => {
 
     return (
         <>
-            <td><a href ={`/products/${masp}`}><img src={process.env.PUBLIC_URL + product.hinhanh} style={{width: "100px"}} className="card-img-top" alt="..." /></a></td>
-            <td><a href ={`/products/${masp}`} className="text-decoration-none">{product.tensp}</a></td>
+            <td><Link to ={`/products/${masp}`}><img src={process.env.PUBLIC_URL + product.hinhanh} style={{width: "100px"}} className="card-img-top" alt="..." /></Link></td>
+            <td><Link to ={`/products/${masp}`} className="text-decoration-none">{product.tensp}</Link></td>
             <td><input type="number"  style={{width: "40px"}} value={soluong} onChange={onChange}></input></td>
             <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.gia*soluong)} </td>
             <td><button className='btn btn-outline-success' onClick={removeCartItem}><i className="fa fa-trash"></i></button></td>

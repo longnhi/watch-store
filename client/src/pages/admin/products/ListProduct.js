@@ -46,7 +46,7 @@ const ListProduct = () => {
                   <td>{product.gioitinh === 1 ? "Nam" : "Nữ"}</td>
                   <td><Link className="btn" to={`/admin/products/detail/${product.masp}`}><i className="fa fa-eye"  /></Link></td>
                   <td><Link className="btn" to={`/admin/products/edit/${product.masp}`}><i className="fa fa-pencil"  /></Link></td>
-                  <td><Link className="btn" to=''><i className="fa fa-trash"  /></Link></td>
+                  <td><button className="btn" ><i className="fa fa-trash"/></button></td>
                 </tr>
               )
             })}

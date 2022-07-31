@@ -32,7 +32,7 @@ const ProductDetail = () => {
     };
 
     const addFavorite = () => {
-        navigate("/favorite",{ replace: true });
+        // navigate("/favorite",{ replace: true });
     };
 
     return (

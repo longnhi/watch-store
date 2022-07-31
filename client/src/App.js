@@ -77,14 +77,15 @@ function App() {
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<CheckOut />} />
           <Route path="lienhe" element={<Lienhe />} />
-          <Route path="order" element={<Order />} />
-          <Route path="order/:madh" element={<OrderDetail />} />
-          <Route path="favorite" element={<Favorite />} />
-          <Route path="login" element={<SignIn />} />
-          <Route path="registry" element={<SignUp />} />
-          <Route path="favorite" element={<Favorite />} />
           <Route path="login" element={<SignIn />} />
           <Route path="registry" element={<SignUp />}/>
+          { authState.isLogin===true && 
+            <>
+              <Route path="favorite" element={<Favorite />} />
+              <Route path="order" element={<Order />} />
+              <Route path="order/:madh" element={<OrderDetail />} />
+            </>
+          }
         </Route>
         { authState.isLogin===true && authState.role==="admin" && 
         <Route path="admin" element={<HomeAdmin />} >
@@ -97,7 +98,7 @@ function App() {
           <Route path="products/edit/:masp" element={<UpdateProduct />} />
           <Route path="products/detail/:masp" element={<ProductDetailAdmin />} />
           <Route path="orders" element={<ListOrder/>} />
-          <Route path="orders/details/:madh" element={<OrderDetails />} />
+          <Route path="orders/detail/:madh" element={<OrderDetails />} />
           <Route path="customers" element={<ListCustomer/>} />
           <Route path="guarantees" element={<ListGuarantee/>} />
           <Route path="guarantees/create" element={<CreateGuarantee />} />

@@ -1,9 +1,9 @@
 const express = require("express");
-const app = express();
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const app = express();
 
 const db =  require('./config/db');
 
@@ -241,7 +241,24 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.get('/customers', validateToken , (req, res) => {
+    db.query('SELECT * FROM khachhang JOIN taikhoan ON taikhoan.email = khachhang.email', (err, data) => {
+        if (err) throw err;
+        else res.json(data);
+    })
+});
+
 // order 
+
+app.get('/orders/list', validateToken, (req, res) => {
+    let sqlSelect = "SELECT * FROM donhang ORDER BY thoigiandat DESC";
+    db.query(sqlSelect,(err, result)=>{
+        if (err) { console.log(err); }
+        else {
+            res.json(result);
+        }
+    });
+});
 
 app.post('/order/pay', validateToken, (req, res) => {
     let cart = req.body.cart
@@ -259,16 +276,16 @@ app.post('/order/pay', validateToken, (req, res) => {
                 for (let i = 0; i < 10; i++)
                 madh += possible.charAt(Math.floor(Math.random() * possible.length));
 
-                db.query("INSERT INTO donhang(madh, nguoinhan,diachinhan,sodienthoai,trangthai,makh) VALUES (?, ?, ?, ?, ?, ?)", [madh, nguoinhan,diachinhan,sodienthoai,"Đang xử lý", makh], (err, result)=>{
+                db.query("INSERT INTO donhang(madh, nguoinhan, diachinhan, sodienthoainguoinhan, trangthai, makh) VALUES (?, ?, ?, ?, ?, ?)", [madh, nguoinhan,diachinhan,sodienthoai,"Đang xử lý", makh], (err, result)=>{
                     if (err) { console.log(err); }
                     else {
                         //let madh = result.insertId;
                         cart.forEach(cartItem => {
-                            db.query("INSERT INTO chitietdonhang(madh,masp,soluong,gia) values (?, ?, ?, ?)",[madh,cartItem.product.masp,cartItem.soluong,cartItem.product.gia], (err, response)=>{
+                            db.query("INSERT INTO chitietdonhang(madh,masp,soluong,gia) values (?, ?, ?, ?)",[madh,cartItem.product.masp,cartItem.soluong,cartItem.product.gia*cartItem.soluong], (err, response)=>{
                                 if (err) { console.log(err); }
                             })
                         });
-                        res.json({message:"success"});
+                        res.json({madh:madh});
                     }
                 });
             }
@@ -276,13 +293,87 @@ app.post('/order/pay', validateToken, (req, res) => {
     } catch (error) {
         console.log(error);
     }
-    //res.json(cart);
 
 });
 
-app.get('orders', validateToken, (req, res) => {
-    
+app.get('/orders/myorder', validateToken, (req, res) => {
+    try {
+        const payload = jwt.decode(req.headers.accesstoken, "dh51805028");
+        let email = payload.email;
+        let sqlSelect = "SELECT madh,nguoinhan,diachinhan,sodienthoainguoinhan,trangthai FROM donhang JOIN khachhang ON donhang.makh=khachhang.makh JOIN taikhoan on khachhang.email=taikhoan.email WHERE khachhang.email LIKE ? ORDER BY thoigiandat DESC";
+        db.query(sqlSelect,email,(err, result)=>{
+            if (err) { console.log(err); }
+            else {
+                res.json(result);
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
 })
+
+app.get('/orders/bymadh/:madh', validateToken, (req, res) => {
+    try {
+        let madh = req.params.madh;
+        const payload = jwt.decode(req.headers.accesstoken, "dh51805028");
+        let email = payload.email;
+        let sqlSelect = "SELECT * FROM donhang JOIN khachhang ON donhang.makh=khachhang.makh WHERE khachhang.email LIKE ? and madh LIKE ? ";
+        db.query(sqlSelect,[email,madh],(err, result)=>{
+            if (err) { console.log(err); }
+            else {
+                res.json(result);
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+app.get('/orders/getbymadh/:madh', validateToken, (req, res) => {
+    try {
+        let madh = req.params.madh;
+        let sqlSelect = "SELECT * FROM donhang JOIN khachhang ON donhang.makh=khachhang.makh WHERE madh LIKE ? ";
+        db.query(sqlSelect,madh,(err, result)=>{
+            if (err) { console.log(err); }
+            else {
+                res.json(result);
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+app.get('/order/getsumpricebymadh/:madh', validateToken, (req, res) => {
+    try {
+        let madh = req.params.madh;
+        let sqlSelect = "SELECT SUM(gia) as 'tong' FROM `chitietdonhang` WHERE madh LIKE ? ";
+        db.query(sqlSelect,madh,(err, result)=>{
+            if (err) { console.log(err); }
+            else {
+                res.json(result);
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+app.get('/order/detail/:madh', validateToken, (req, res) => {
+    try {
+        let madh = req.params.madh;
+        let sqlSelect = "SELECT * FROM chitietdonhang WHERE madh LIKE ? ";
+        db.query(sqlSelect, madh,(err, result)=>{
+            if (err) { console.log(err); }
+            else {
+                res.json(result);
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 app.listen(3001, () => {
     console.log("Server running on port 3001");
 });

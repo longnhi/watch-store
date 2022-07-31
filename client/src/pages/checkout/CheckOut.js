@@ -31,7 +31,7 @@ const CheckOut = () => {
       headers: { accessToken: localStorage.getItem("accessToken") },
     }).then((res) => {
         localStorage.removeItem("cart");
-        navigate("/cart", { replace: true });
+        navigate("/order/"+res.data.madh, { replace: true });
     }).catch((e) => {
         console.log(e);
     });
@@ -53,11 +53,11 @@ const CheckOut = () => {
             <label htmlFor="fullname">Họ tên người nhận</label>
         </div>
         <div className="form-floating mb-3">
-            <input required type="text" className="form-control" id="phone" value={diaChiNhan} placeholder="Số điện thoại" onChange={(e) => {setDiaChiNhan(e.target.value)}} />
+            <input required type="text" className="form-control" id="phone" value={soDienThoai} placeholder="Số điện thoại" onChange={(e) => {setSoDienThoai(e.target.value)}} />
             <label htmlFor="phone">Số điện thoại</label>
         </div>
         <div className="form-floating mb-3">
-            <input required type="text" className="form-control" id="floatingInput" value={soDienThoai} placeholder="180 Cao Lỗ" onChange={(e) => {setSoDienThoai(e.target.value)}} />
+            <input required type="text" className="form-control" id="floatingInput" value={diaChiNhan} placeholder="180 Cao Lỗ" onChange={(e) => {setDiaChiNhan(e.target.value)}} />
             <label htmlFor="floatingInput">Địa chỉ nhận</label>
         </div>
         <button className="w-100 btn btn-lg btn-outline-primary mb-3" type="submit">Đặt hàng</button>

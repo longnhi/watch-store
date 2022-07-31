@@ -19,7 +19,7 @@ const Product = (props) => {
     };
 
     const addFavorite = () => {
-        navigate("/favorite",{ replace: true });
+        //navigate("/favorite",{ replace: true });
     };
 
     return (
@@ -37,7 +37,7 @@ const Product = (props) => {
                 <div className="card-body d-flex justify-content-around">
                     <button onClick={() => {addToCart()}} className="card-link btn link-dark"><i className="fa fa-cart-plus fa-2x"/></button>
                     <button onClick={() => {navigate(`/products/${product.masp}`,{replace:true})}} className="card-link btn link-dark"><i className="fa fa-search fa-2x" /></button>
-                    <button onClick={() => {addFavorite()}} to="/login" className="card-link btn link-dark"><i className="fa fa-heart-o fa-2x" /></button>
+                    <button onClick={() => {addFavorite()}} className="card-link btn link-dark"><i className="fa fa-heart-o fa-2x" /></button>
                 </div>
                 </div>
             </div>
