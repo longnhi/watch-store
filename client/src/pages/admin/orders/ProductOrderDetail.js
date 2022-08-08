@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
+import {API} from '../../../config/API';
 
 const ProductOrderDetail = (props) => {
 
@@ -7,7 +8,7 @@ const ProductOrderDetail = (props) => {
     const [product, setProduct] = useState({});
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/products/${masp}`).then((response) => {
+        axios.get(`${API}products/${masp}`).then((response) => {
             setProduct(response.data[0]);
         });
     },[masp]);
@@ -15,7 +16,7 @@ const ProductOrderDetail = (props) => {
     return (
         <>
             <td>
-                <img src={process.env.PUBLIC_URL + product.hinhanh} style={{width: "100px"}} className="card-img-top" alt="..." />
+                <img src={process.env.PUBLIC_URL + "/assets/img/products/" + product.hinhanh} style={{width: "100px"}} className="card-img-top" alt="..." />
             </td>
             <td>
                 {product.tensp}

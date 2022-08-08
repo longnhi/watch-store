@@ -8,7 +8,7 @@ const HomeAdmin = () => {
     <div>
       <HeaderAdmin />
       <div className="container-fluid">
-        <div className="row">
+        <div className="row" style={{minWidth:'750px'}}>
           <Sidebar />
           <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <Outlet />

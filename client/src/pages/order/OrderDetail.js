@@ -2,10 +2,13 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
+import ProductOrderDetail from '../admin/orders/ProductOrderDetail';
+
 const OrderDetail = () => {
     let { madh } = useParams();
     const [order, setOrder] = useState({});
-    const [orderDetail, setOrderDetail] = useState([]);
+    const [listOrderDetail, setListOrderDetail] = useState([]);
+    const [total, setTotal] = useState(0);
 
     useEffect(() => {
         axios.get('http://localhost:3001/orders/bymadh/'+ madh, {
@@ -23,15 +26,20 @@ const OrderDetail = () => {
               accessToken: localStorage.getItem("accessToken"),
             },
         }).then((response) => {
-            setOrderDetail(response.data);
-            console.log(response.data);
-            console.log(orderDetail);
+            setListOrderDetail(response.data);
         }).catch((e) => {
             console.log(e);
         });
-    },[madh,orderDetail]);
-
-
+        axios.get('http://localhost:3001/order/getsumpricebymadh/'+madh, {
+            headers: {
+            accessToken: localStorage.getItem("accessToken"),
+            },
+        }).then((response) => {
+            setTotal(response.data[0].tong);
+        }).catch((e) => {
+            console.log(e);
+        });
+    },[madh]);
 
     return (
         <div className="container my-4">
@@ -51,30 +59,35 @@ const OrderDetail = () => {
                     <p>Ngày đặt: {new Date(order.thoigiandat).toLocaleString()}</p>
                 </div>
                 <div className="card-body">
+                <div className="table-responsive">
                     <table className="table text-center align-middle">
-                        <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col">Tên sản phẩm</th>
-                                <th scope="col">Số lượng</th>
-                                <th scope="col">Giá</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row"><img src={process.env.PUBLIC_URL + '/assets/img/products/CASIO-AE-1200WHD-1AVDF-1.jpg'} style={{width: "100px"}} className="card-img-top" alt="..." /></th>
-                                <td>Casio AE-1200WHD-1AVDF</td>
-                                <td></td>
-                                <td>1.200.000 VNĐ</td>
-                                
-                            </tr>
-                            
-                            <tr>
-                                <td colSpan="3">Tổng tiền</td>
-                                <td>2.400.000 VNĐ</td>
-                            </tr>
-                        </tbody>
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Giá</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        {listOrderDetail.map((orderDetail) =>{
+                            return (<tr key={orderDetail.mactdh}>
+                            <ProductOrderDetail masp={orderDetail.masp} />
+                            <td>
+                                {orderDetail.soluong}
+                            </td>
+                            <td>
+                                {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(orderDetail.gia)}
+                            </td>
+                            </tr>)
+                        })}
+                        <tr>
+                            <td colSpan="3">Tổng tiền</td>
+                            <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total)}</td>
+                        </tr>
+                    </tbody>
                     </table>
+                </div>
                 </div>
                 <div className="card-footer text-muted text-center">
                     {order.trangthai==="Đang xử lý"?(<a className='btn btn-primary ' href='/'>Hủy đơn</a>):(<a disabled className='btn btn-primary disabled' href='/'>Hủy đơn</a>)}

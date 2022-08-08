@@ -1,16 +1,33 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import {API} from '../../../config/API';
 
 const ListProduct = () => {
 
   const [listProduct, setListProduct] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/products`).then((res) => { 
+    axios.get(`${API}products`).then((res) => { 
       setListProduct(res.data);
   });
   },[]);
+
+  const deleteProduct = (masp) => {
+    axios.delete(`${API}product/${masp}`,{
+      headers: {
+        accessToken: localStorage.getItem("accessToken"),
+      },
+    }).then((res) => {
+      if(!res.data.errCode){
+        setListProduct(
+          listProduct.filter((val) => {
+            return val.masp !== masp;
+          })
+        );
+      }
+    });
+  };
 
   return (
     <div >
@@ -27,7 +44,8 @@ const ListProduct = () => {
         <table className="table table-striped table-sm text-center align-middle">
           <thead>
             <tr>
-              <th scope="col"></th>
+              <th scope="col">Mã sản phẩm</th>
+              <th scope="col">Hình ảnh</th>
               <th scope="col">Tên sản phẩm</th>
               <th scope="col">Giá</th>
               <th scope="col">Xuất xứ</th>
@@ -36,17 +54,18 @@ const ListProduct = () => {
             </tr>
           </thead>
           <tbody>
-            {listProduct.map((product) => {
+            {[...listProduct].reverse().map((product) => {
               return (
                 <tr key={product.masp}>
-                  <td><img src={process.env.PUBLIC_URL + product.hinhanh} style={{width: "100px"}} className="card-img-top" alt="..." /></td>
+                  <td>{product.masp}</td>
+                  <td><img src={process.env.PUBLIC_URL + "/assets/img/products/" + product.hinhanh} style={{width: "100px"}} className="card-img-top" alt="..." /></td>
                   <td>{product.tensp}</td>
                   <td>{product.gia} VNĐ</td>
                   <td>{product.xuatxu}</td>
                   <td>{product.gioitinh === 1 ? "Nam" : "Nữ"}</td>
                   <td><Link className="btn" to={`/admin/products/detail/${product.masp}`}><i className="fa fa-eye"  /></Link></td>
                   <td><Link className="btn" to={`/admin/products/edit/${product.masp}`}><i className="fa fa-pencil"  /></Link></td>
-                  <td><button className="btn" ><i className="fa fa-trash"/></button></td>
+                  <td><button className="btn" onClick={()=>{deleteProduct(product.masp)}}><i className="fa fa-trash"/></button></td>
                 </tr>
               )
             })}

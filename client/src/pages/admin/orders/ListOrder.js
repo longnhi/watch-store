@@ -1,13 +1,14 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
-import {Link} from 'react-router-dom';
+import OrderListItem from '../../../components/orders/admin/OrderListItem';
+import {API} from '../../../config/API';
 
 const ListOrder = () => {
 
   const [listOrder, setListOrder] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/orders/list',{
+    axios.get(`${API}orders/list`,{
       headers: {
         accessToken: localStorage.getItem("accessToken"),
       },
@@ -39,13 +40,7 @@ const ListOrder = () => {
             {listOrder.map((order) => {
               return (
                 <tr key={order.madh}>
-                  <td>{order.madh}</td>
-                  <td>{order.nguoinhan}</td>
-                  <td>{order.diachinhan}</td>
-                  <td>{order.sodienthoainguoinhan}</td>
-                  <td>{order.trangthai}</td>
-                  <td>{new Date(order.thoigiandat).toLocaleString()}</td>
-                  <td><Link className="btn" to={`/admin/orders/detail/${order.madh}`}><i className="fa fa-eye"  /></Link></td>
+                  <OrderListItem order={order} />
                 </tr>
               )
             })}

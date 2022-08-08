@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios';
+import CustomerItem from '../../../components/customers/admin/CustomerItem';
+import {API} from '../../../config/API';
 
 const ListCustomer = () => {
   const [listCustomer, setListCustomer] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/customers',{
+    axios.get(`${API}customers`,{
       headers: {
         accessToken: localStorage.getItem("accessToken"),
       },
@@ -13,14 +15,6 @@ const ListCustomer = () => {
       setListCustomer(response.data);
     });
   },[])
-
-  const lock = () => {
-    console.log("lock");
-  };
-
-  const unlock = () => {
-    console.log("unlock lock");
-  };
 
   return (
     <div >
@@ -43,17 +37,7 @@ const ListCustomer = () => {
             {listCustomer.map((customer) => {
               return (
                 <tr key={customer.makh}>
-                  <td>{customer.makh}</td>
-                  <td>{customer.hoten}</td>
-                  <td>{customer.sodienthoai}</td>
-                  <td>{customer.email}</td>
-                  <td>{customer.status===1?"Đang hoạt động":"Đã khóa"}</td>
-                  <td>{customer.status===1? (
-                    <button className="btn" onClick={lock(customer.email)}><i className="fa fa-unlock-alt"/></button>
-                  ):(
-                    <button className="btn" onClick={unlock(customer.email)}><i className="fa fa-lock"/></button>
-                  )}
-                  </td>
+                  <CustomerItem customer={customer} />
                 </tr>
               )
             })}

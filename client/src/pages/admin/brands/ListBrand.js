@@ -1,24 +1,36 @@
 import axios from 'axios';
 import React, { useState, useEffect} from 'react'
 import {Link} from 'react-router-dom';
+import {API} from '../../../config/API'
 
 const ListBrand = () => {
 
   const [listBrand, setListBrand] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/brands`).then((res) => { 
+    axios.get(`${API}brands`).then((res) => { 
       setListBrand(res.data);
     });
   },[]);
 
   const deleteBrand = (math) => {
-    axios.delete(`http://localhost:3001/brands/${math}`);
-    window.location.reload();
+    axios.delete(`${API}brands/${math}`,{
+      headers: {
+        accessToken: localStorage.getItem("accessToken"),
+      },
+    }).then((res) => {
+      if(!res.data.errCode){
+        setListBrand(
+          listBrand.filter((val) => {
+            return val.math !== math;
+          })
+        );
+      }
+    });
   };
-
+  
   return (
-    <div >
+    <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 className="h2">Quản lý thương hiệu</h1>
         <div className="btn-toolbar mb-2 mb-md-0">
@@ -51,7 +63,7 @@ const ListBrand = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    </>
   )
 }
 

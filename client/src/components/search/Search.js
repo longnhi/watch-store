@@ -8,8 +8,9 @@ const Search = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if(inputSearch===""){
-            navigate("/products",{ replace: true });
+        if(inputSearch.replace(/\s+/g,' ').trim()===""){
+            //navigate("/products",{ replace: true });
+            setInputSearch("");
         }else{  
             setInputSearch("");
             navigate(`search/${inputSearch.replace(/\s+/g,' ').trim()}`);

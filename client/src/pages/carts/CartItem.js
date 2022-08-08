@@ -44,7 +44,7 @@ const CartItem = (props) => {
 
     return (
         <>
-            <td><Link to ={`/products/${masp}`}><img src={process.env.PUBLIC_URL + product.hinhanh} style={{width: "100px"}} className="card-img-top" alt="..." /></Link></td>
+            <td><Link to ={`/products/${masp}`}><img src={process.env.PUBLIC_URL + "/assets/img/products/" + product.hinhanh} style={{width: "100px"}} className="card-img-top" alt="..." /></Link></td>
             <td><Link to ={`/products/${masp}`} className="text-decoration-none">{product.tensp}</Link></td>
             <td><input type="number"  style={{width: "40px"}} value={soluong} onChange={onChange}></input></td>
             <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.gia*soluong)} </td>

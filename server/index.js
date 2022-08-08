@@ -1,9 +1,9 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
 const app = express();
+
+const multer = require('multer')
 
 const db =  require('./config/db');
 
@@ -15,17 +15,18 @@ const jwt = require("jsonwebtoken");
 
 app.use(express.json());
 app.use(cors());
-
-app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:true}));
 
-app.use(session({
-    key: 'user',
-    secret: 'DH51805028',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 1000*60*60*24 }
-}));
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, '../client/public/assets/img/products/')
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + '-' + file.originalname)
+    },
+})
+  
+const upload = multer({ storage: storage })
 
 app.get('/', (req,res) => {
     res.json("Hello world!");
@@ -47,26 +48,28 @@ app.get('/brands/:math', (req, res) => {
     })
 });
 
-app.post('/brands', (req, res) => {
+app.post('/brands', validateToken, (req, res) => {
     const nameBrand = req.body.nameBrand;
-    res.json(nameBrand);
     db.query("INSERT INTO thuonghieu (tenth) VALUES (?)", nameBrand, (err, result)=>{
         if (err) { console.log(err); }
+        else { res.json(result) };
     })
 });
 
-app.put('/brands', (req, res) => {
+app.put('/brands', validateToken, (req, res) => {
     const math = req.body.math;
     const nameBrand = req.body.nameBrand;
     db.query("UPDATE thuonghieu SET tenth=? where math=?", [ nameBrand, math ], (err, result)=>{
         if (err) { console.log(err); }
+        else res.json(result);
     })
 });
 
-app.delete('/brands/:math', (req, res) => {
+app.delete('/brands/:math', validateToken, (req, res) => {
     const math = req.params.math;
     db.query("DELETE FROM thuonghieu where math=?",  math , (err, result)=>{
-        if (err) { console.log(err); }
+        if (err) { res.json({ errCode:1}); }
+        else res.json(result);
     })
 });
 
@@ -87,6 +90,7 @@ app.get('/categorys/:maloai', (req, res) => {
 });
 
 // sản phẩm
+
 
 app.get('/products/', (req, res) => {
     db.query("SELECT * FROM sanpham", (err, result)=>{
@@ -170,6 +174,80 @@ app.get('/products/price/:price', (req, res) => {
     }
 });
 
+app.post('/product', validateToken, (req, res) => {
+    
+    let uploadFile = upload.single("file");
+    uploadFile(req, res, (error) => {
+        let tensp = req.body.tensp;
+        let gia = req.body.gia;
+        let xuatxu = req.body.xuatxu;
+        let baohanh = req.body.baohanh;
+        let soluong = req.body.soluong;
+        let mota = req.body.mota;
+        let gioitinh = req.body.gioitinh; 
+        let math = req.body.math;
+        let maloai = req.body.maloai;
+        let hinhanh = req.file.filename;
+        const data = [tensp, gia, xuatxu, baohanh,soluong, mota, gioitinh, math, maloai, hinhanh];
+        const sqlInsert = "INSERT INTO sanpham (tensp,gia,xuatxu,baohanh,soluong,mota,gioitinh,math,maloai,hinhanh) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        db.query(sqlInsert, data, (err, result)=>{
+            if(err) console.log(err);
+            else res.json(result);
+        });
+    });
+});
+
+app.put('/product/:masp', validateToken, (req, res) => {
+    
+    let uploadFile = upload.single("file");
+    uploadFile(req, res, (error) => {
+        let masp = req.params.masp;
+        let tensp = req.body.tensp;
+        let gia = req.body.gia;
+        let xuatxu = req.body.xuatxu;
+        let baohanh = req.body.baohanh;
+        let soluong = req.body.soluong;
+        let mota = req.body.mota;
+        let gioitinh = req.body.gioitinh; 
+        let math = req.body.math;
+        let maloai = req.body.maloai;
+        let hinhanh = req.file.filename;
+        const data = [tensp, gia, xuatxu, baohanh,soluong, mota, gioitinh, math, maloai, hinhanh, masp];
+        const sqlUpdate = "UPDATE sanpham SET tensp=?,gia=?,xuatxu=?,baohanh=?,soluong=?,mota=?,gioitinh=?,math=?,maloai=?,hinhanh=? WHERE masp=?";
+        db.query(sqlUpdate, data, (err, result)=>{
+            if(err) console.log(err);
+            else res.json(result);
+        });
+    });
+});
+
+app.put('/productnoimage/:masp', validateToken, (req, res) => {
+    let masp = req.params.masp;
+    let tensp = req.body.tensp;
+    let gia = req.body.gia;
+    let xuatxu = req.body.xuatxu;
+    let baohanh = req.body.baohanh;
+    let soluong = req.body.soluong;
+    let mota = req.body.mota;
+    let gioitinh = req.body.gioitinh; 
+    let math = req.body.math;
+    let maloai = req.body.maloai;
+    const data = [tensp, gia, xuatxu, baohanh,soluong, mota, gioitinh, math, maloai,masp];
+    const sqlUpdate = "UPDATE sanpham SET tensp=?,gia=?,xuatxu=?,baohanh=?,soluong=?,mota=?,gioitinh=?,math=?,maloai=? WHERE masp=?";
+    db.query(sqlUpdate, data, (err, result)=>{
+        if(err) console.log(err);
+        else res.json(result);
+    });
+});
+
+app.delete('/product/:masp', validateToken, (req, res)=>{
+    const masp = req.params.masp;
+    db.query("DELETE FROM sanpham where masp=?",  masp , (err, result)=>{
+        if (err) { res.json({ errCode:1}); }
+        else res.json(result);
+    })
+});
+
 //tài khoản
 
 app.post("/register", (req, res) => {
@@ -246,6 +324,16 @@ app.get('/customers', validateToken , (req, res) => {
         if (err) throw err;
         else res.json(data);
     })
+});
+
+app.put('/customers', validateToken , (req, res) => {
+    let email = req.body.email;
+    let status = req.body.status;
+    const sqlUpdate = "UPDATE taikhoan SET status = ? WHERE email = ?";
+    db.query(sqlUpdate,[status,email], (err, result) => {
+        if (err) console.log(err);
+        else res.json(result);
+    });
 });
 
 // order 

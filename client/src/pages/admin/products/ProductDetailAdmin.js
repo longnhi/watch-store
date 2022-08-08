@@ -1,13 +1,14 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
 import { Link, useParams} from 'react-router-dom'
+import {API} from '../../../config/API';
 
 const ProductDetailAdmin = () => {
     let { masp } = useParams();
     const [product,setProduct] = useState({});
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/products/${masp}`).then((res) => { 
+        axios.get(`${API}products/${masp}`).then((res) => { 
             setProduct(res.data[0]);
         });
     },[masp]);
@@ -19,7 +20,7 @@ const ProductDetailAdmin = () => {
                 
             </div>
             <div className="col-md-6 mb-md-0 p-md-4">
-            <img src={process.env.PUBLIC_URL + product.hinhanh} className="w-100" alt="..." />
+            <img src={process.env.PUBLIC_URL + "/assets/img/products/"+ product.hinhanh} className="w-100" alt="..." />
             </div>
             <div className="col-md-6 p-4 ps-md-0">
                 <div className="card" style={{height: '100%'}}>

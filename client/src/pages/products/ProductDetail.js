@@ -32,14 +32,19 @@ const ProductDetail = () => {
     };
 
     const addFavorite = () => {
-        // navigate("/favorite",{ replace: true });
+        let item = localStorage.getItem('accessToken');
+        if(!item){
+            navigate("/login",{ replace: true });
+        }else {
+            //navigate("/favorite",{ replace: true });
+        }
     };
 
     return (
         <>
             <div className="row g-0 bg-light position-relative">
                 <div className="col-md-6 mb-md-0 p-md-4">
-                <img src={process.env.PUBLIC_URL + product.hinhanh} className="w-100" alt="..." />
+                <img src={process.env.PUBLIC_URL + "/assets/img/products/" + product.hinhanh} className="w-100" alt="..." />
                 </div>
                 <div className="col-md-6 p-4 ps-md-0">
                     <div className="card" style={{height: '100%'}}>

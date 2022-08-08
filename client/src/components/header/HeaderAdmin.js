@@ -6,6 +6,7 @@ const HeaderAdmin = () => {
   
   let navigate = useNavigate();
   const { setAuthState } = useContext(AuthContext);
+  
   const logout = () => {
     localStorage.removeItem("accessToken");
     setAuthState({ email: "", role: "", status: 0 , isLogin: false });
