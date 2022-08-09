@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import { Link, useParams } from 'react-router-dom'
 import ProductList from '../../components/product/ProductList';
+import {API} from '../../config/API';
+
 
 const ProductByCategory = () => {
 
@@ -10,10 +12,10 @@ const ProductByCategory = () => {
     const [listProduct, setListProduct] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/categorys/${maloai}`).then((res) => {
+        axios.get(`${API}categorys/${maloai}`).then((res) => {
             setCategory(res.data[0]);
         });
-        axios.get(`http://localhost:3001/products/category/${maloai}`).then((res) => { 
+        axios.get(`${API}products/category/${maloai}`).then((res) => { 
             setListProduct(res.data);
         });
     },[maloai]);

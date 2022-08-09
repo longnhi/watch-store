@@ -57,9 +57,8 @@ const CreateProduct = () => {
         'content-type': 'multipart/form-data'
       },
     }).then((response) => {
-      
+      navigate("/admin/products", {replace:true});
     });
-    navigate("/admin/products", {replace:true});
   };
 
   return (
@@ -96,7 +95,7 @@ const CreateProduct = () => {
                     <label htmlFor="baohanh">Bảo hành</label>
                 </div>
                 <div className="form-floating mb-3">
-                    <input type="number" className="form-control" id="soluong" required placeholder="Nhập số lượng" onChange={(e)=>{setSoluong(e.target.value)}} value={soluong} />
+                    <input type="number" className="form-control" id="soluong" required min={1} placeholder="Nhập số lượng" onChange={(e)=>{setSoluong(e.target.value)}} value={soluong} />
                     <label htmlFor="soluong">Số lượng</label>
                 </div>
                 <div className="form-floating mb-3">

@@ -3,12 +3,15 @@ import './signin.css'
 import { useNavigate, Navigate } from "react-router-dom";
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
+import {API} from '../../config/API';
+
 
 const SignIn = () => {
     let navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [checkUserFail, setCheckUserFail] = useState(false);
+    const [messages, setMessages] = useState("");
 
     const { authState } = useContext(AuthContext);
 
@@ -18,12 +21,17 @@ const SignIn = () => {
     
     const login = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:3001/login", {
+        axios.post(`${API}login`, {
             email: email,
             password: password
         }).then((res) => {
             if(res.data.err){
                 setCheckUserFail(true);
+                if(res.data.err === 1){
+                    setMessages("Email hoặc mật khẩu không chính xác");
+                }else if(res.data.err === 2){
+                    setMessages("Tài khoản của bạn đã bị khóa");
+                }
             }else {
                 localStorage.setItem("accessToken", res.data);
                 navigate("/", { replace: true });
@@ -41,7 +49,7 @@ const SignIn = () => {
                 <h1 className="h3 mb-3 fw-normal">Đăng nhập</h1>
                 {checkUserFail && (
                     <div className="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Email hoặc mật khẩu không chính xác</strong>
+                        <strong>{messages}</strong>
                         <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={() => {setCheckUserFail(false);}}></button>
                     </div>
                 )}

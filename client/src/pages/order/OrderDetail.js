@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
-
+import {API} from '../../config/API';
 import ProductOrderDetail from '../admin/orders/ProductOrderDetail';
 
 const OrderDetail = () => {
@@ -11,7 +11,7 @@ const OrderDetail = () => {
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/orders/bymadh/'+ madh, {
+        axios.get(`${API}orders/bymadh/`+ madh, {
             headers: {
               accessToken: localStorage.getItem("accessToken"),
             },
@@ -21,7 +21,7 @@ const OrderDetail = () => {
             console.log(e);
         });
 
-        axios.get('http://localhost:3001/order/detail/'+madh, { 
+        axios.get(`${API}order/detail/`+madh, { 
             headers: {
               accessToken: localStorage.getItem("accessToken"),
             },
@@ -30,7 +30,7 @@ const OrderDetail = () => {
         }).catch((e) => {
             console.log(e);
         });
-        axios.get('http://localhost:3001/order/getsumpricebymadh/'+madh, {
+        axios.get(`${API}order/getsumpricebymadh/`+madh, {
             headers: {
             accessToken: localStorage.getItem("accessToken"),
             },

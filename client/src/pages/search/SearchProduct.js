@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import { Link, useParams } from 'react-router-dom'
 import ProductList from '../../components/product/ProductList';
+import {API} from '../../config/API';
+
 
 const SearchProduct = () => {
 
@@ -9,7 +11,7 @@ const SearchProduct = () => {
   const [listProduct, setListProduct] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/products/byname/${name}`).then((res) => { 
+    axios.get(`${API}products/byname/${name}`).then((res) => { 
         setListProduct(res.data);
     });
   },[name]);

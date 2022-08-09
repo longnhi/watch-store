@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import { Link, useParams } from 'react-router-dom'
 import ProductList from '../../components/product/ProductList';
+import {API} from '../../config/API';
+
 
 const ProductByBrand = () => {
 
@@ -10,10 +12,10 @@ const ProductByBrand = () => {
     const [listProduct, setListProduct] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/brands/${math}`).then((res) => {
+        axios.get(`${API}brands/${math}`).then((res) => {
             setBrand(res.data[0]);
         });
-        axios.get(`http://localhost:3001/products/brand/${math}`).then((res) => { 
+        axios.get(`${API}products/brand/${math}`).then((res) => { 
             setListProduct(res.data);
         });
     },[math]);

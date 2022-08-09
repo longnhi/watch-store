@@ -52,7 +52,7 @@ const Cart = () => {
                 </tbody>
             </table>
             <div className='text-center'>
-                <button className='btn btn-primary' onClick={() => {navigate('/checkout',{replace: true })}} >Thanh toán</button>
+                <button className='btn btn-primary' onClick={() => {if(!localStorage.getItem('accessToken')){navigate('/login',{replace: true })} else navigate('/checkout',{replace: true })}} >Thanh toán</button>
             </div>
                 </>)}
         </div>

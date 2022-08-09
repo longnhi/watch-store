@@ -1,11 +1,12 @@
 import React, { useEffect, useState} from 'react'
 import axios from 'axios';
+import {API} from '../../config/API';
 
 const Order = () => {
     const [listOrder,setListOrder] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:3001/orders/myorder", {
+        axios.get(`${API}orders/myorder`, {
             headers: {
               accessToken: localStorage.getItem("accessToken"),
             },

@@ -1,10 +1,9 @@
-import React, { useContext, useState} from 'react'
+import React, { useState} from 'react'
 import {Link, Navigate, useNavigate} from 'react-router-dom'
 import axios from 'axios';
-import { AuthContext } from '../../context/AuthContext';
+import {API} from '../../config/API';
 
 const CheckOut = () => {
-  const { authState } = useContext(AuthContext);
   const [nguoiNhan, setNguoiNhan] = useState("");
   const [diaChiNhan, setDiaChiNhan] = useState("");
   const [soDienThoai, setSoDienThoai] = useState("");
@@ -12,17 +11,13 @@ const CheckOut = () => {
 
   let navigate = useNavigate();
 
-  if(!authState.isLogin){
-      return (<Navigate to="/login" replace={true} />)
-  }
-
   if(JSON.parse(localStorage.getItem('cart')).length === 0){
     return (<Navigate to="/cart" replace={true} />)
   }
 
   const onSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:3001/order/pay", {
+    axios.post(`${API}order/pay`, {
       nguoinhan: nguoiNhan,
       diachinhan: diaChiNhan,
       sodienthoai: soDienThoai,

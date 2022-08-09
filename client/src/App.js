@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Suspense} from 'react';
 import { Routes, Route,  Navigate } from 'react-router-dom';
 import Home from './pages/home/Home';
 import Main from './pages/home/Main';
@@ -33,6 +33,7 @@ import ProductByPrice from './pages/products/ProductByPrice';
 import ProductDetailAdmin from './pages/admin/products/ProductDetailAdmin';
 import { AuthContext } from "./context/AuthContext";
 import axios from 'axios';
+import { API } from './config/API';
 
 function App() {
 
@@ -43,8 +44,10 @@ function App() {
     isLogin:false
   });
 
+  const [customerState,setCustomerState] = useState();
+
   useEffect(() => {
-    axios.get("http://localhost:3001/auth/", {
+    axios.get(`${API}auth/`, {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         },
@@ -53,18 +56,43 @@ function App() {
 
         } else {
           setAuthState({
-            email: response.data.email,
-            role: response.data.role,
-            status: response.data.status,
+            email: response.data[0].email,
+            role: response.data[0].role,
+            status: response.data[0].status,
             isLogin: true
           });
         }
       });
-  }, [authState]);
+      axios.get(`${API}customer/`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      }).then((response) => {
+        if (response.data.error) {
+
+        } else {
+          if (response.data.length > 0) {
+            setCustomerState({
+              makh:response.data[0].makh,
+              hoten: response.data[0].hoten,
+              sodienthoai: response.data[0].sodienthoai
+            });
+          }
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    if(authState.email !=="" && authState.status === 0){
+      localStorage.removeItem("accessToken");
+      window.location.reload();
+    }
+  },[authState.email, authState.status]);
 
   return (
     <div className="App">
-      <AuthContext.Provider value={{ authState, setAuthState }}>
+      <AuthContext.Provider value={{ authState, setAuthState ,customerState }}>
+      <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={(authState.isLogin===true && authState.role === "admin")?<Navigate to="/admin" replace={ true } />:<Main />}>
           <Route index element={<Home />} />
@@ -75,7 +103,6 @@ function App() {
           <Route path="products/price/:price" element={<ProductByPrice/>}/>
           <Route path="search/:name" element={<SearchProduct />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="checkout" element={<CheckOut />} />
           <Route path="lienhe" element={<Lienhe />} />
           <Route path="login" element={<SignIn />} />
           <Route path="registry" element={<SignUp />}/>
@@ -84,11 +111,12 @@ function App() {
               <Route path="favorite" element={<Favorite />} />
               <Route path="order" element={<Order />} />
               <Route path="order/:madh" element={<OrderDetail />} />
+              <Route path="checkout" element={<CheckOut />} />
             </>
           }
         </Route>
-        { authState.isLogin===true && authState.role==="admin" && 
-        <Route path="admin" element={<HomeAdmin />} >
+        
+        <Route path="admin" element={authState.isLogin===true && authState.role==="admin" ? <HomeAdmin /> : <Navigate to="/" replace={ true } />} >
           <Route path="" element={<MainAdmin />}/>
           <Route path="brands" element={<ListBrand/>} />
           <Route path="brands/add" element={<CreateBrand />} />
@@ -103,9 +131,9 @@ function App() {
           <Route path="guarantees" element={<ListGuarantee/>} />
           <Route path="guarantees/create" element={<CreateGuarantee />} />
         </Route>
-        }
         <Route path="*" element={<Error />} />
       </Routes>
+      </Suspense>
       </AuthContext.Provider>
     </div>
   );

@@ -2,7 +2,7 @@ import React from 'react'
 
 const ListGuarantee = () => {
   return (
-    <div>ListGuarantee</div>
+    <div></div>
   )
 }
 

@@ -1,19 +1,18 @@
 import React, {useState} from 'react'
 import axios from 'axios';
+import { API } from '../../../config/API';
 
 const CustomerItem = (props) => {
 
     const [customer,setCustomer] = useState(props.customer);
 
-    const lock = (email,status) => {
-        axios.put('http://localhost:3001/customers', {email:email,status:status} ,{
+    const lock = async (email,status) => {
+        await axios.put(`${API}customers`, {email:email,status:status} ,{
           headers: {
             accessToken: localStorage.getItem("accessToken"),
           },
         }).then((response) => {
-            let newCustomer = customer;
-            newCustomer.status = status;
-            setCustomer(newCustomer);
+            setCustomer({...customer,status:status});
         });
     };
 

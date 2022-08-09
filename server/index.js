@@ -93,6 +93,13 @@ app.get('/categorys/:maloai', (req, res) => {
 
 
 app.get('/products/', (req, res) => {
+    db.query("SELECT * FROM sanpham where trangthai != 0", (err, result)=>{
+        if (err) { console.log(err); }
+        res.json(result);
+    })
+});
+
+app.get('/allproducts', (req, res) => {
     db.query("SELECT * FROM sanpham", (err, result)=>{
         if (err) { console.log(err); }
         res.json(result);
@@ -100,7 +107,7 @@ app.get('/products/', (req, res) => {
 });
 
 app.get('/productsnew/', (req, res) => {
-    db.query("SELECT * FROM sanpham order by masp desc limit 4", (err, result)=>{
+    db.query("SELECT * FROM sanpham where trangthai != 0 order by masp desc limit 4", (err, result)=>{
         if (err) { console.log(err); }
         res.json(result);
     })
@@ -248,6 +255,49 @@ app.delete('/product/:masp', validateToken, (req, res)=>{
     })
 });
 
+// Yêu thích
+app.get('/favoritelist/:makh', validateToken, (req, res)=>{
+    let makh = req.params.makh;
+
+    db.query("SELECT * FROM yeuthich JOIN sanpham ON yeuthich.masp=sanpham.masp WHERE yeuthich.makh=?", makh , (err, result)=>{
+        if (err) { console.log(err) }
+        else { res.json(result) }
+    });
+});
+
+app.get('/favorite',validateToken, (req, res)=>{
+    let masp = req.query.masp;
+    let makh = req.query.makh;
+    db.query("SELECT * FROM yeuthich where masp=? and makh=?", [masp,makh] , (err, result)=>{
+        if (err) { console.log(err) }
+        else {
+            res.json(result);
+        }
+    });
+});
+
+app.post('/favorite',validateToken, (req, res)=>{
+    let masp = req.body.masp;
+    let makh = req.body.makh;
+
+    db.query("INSERT INTO yeuthich (masp,makh) VALUES (?, ?)", [masp,makh], (err, result)=>{
+        if (err) { console.log(err) }
+        else {
+            res.json(result);
+        }
+    });
+});
+
+app.delete('/favorite', validateToken, (req, res) => {
+    let masp = req.query.masp;
+    let makh = req.query.makh;
+
+    db.query("DELETE FROM yeuthich WHERE masp = ? and makh= ? ",[masp,makh], (err, result) => {
+        if (err) { console.log(err) }
+        else { res.json(result); }
+    });
+});
+
 //tài khoản
 
 app.post("/register", (req, res) => {
@@ -288,7 +338,20 @@ app.post("/register", (req, res) => {
 app.get('/auth', validateToken , (req, res) => {
     try {
         const payload = jwt.decode(req.headers.accesstoken, "dh51805028");
-        res.json(payload);
+        db.query("SELECT email, status, role FROM taikhoan WHERE email like ?", payload.email, (err, result) => {
+            res.json(result);
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.get('/customer', validateToken , (req, res) => {
+    try {
+        const payload = jwt.decode(req.headers.accesstoken, "dh51805028");
+        db.query("SELECT * FROM khachhang WHERE email like ?", payload.email, (err, result) => {
+            res.json(result);
+        });
     } catch (error) {
         console.log(error);
     }
@@ -308,10 +371,14 @@ app.post('/login', (req, res) => {
                     // res == true or res == false
                     if (err) throw err;
                     if (data) {
-                        const accessToken = createTokens(result[0].email, result[0].role, result[0].status);
-                        res.json(accessToken);
+                        if(result[0].status===0){
+                            res.json({ err: 2 })
+                        }else {
+                            const accessToken = createTokens(result[0].email, result[0].role, result[0].status);
+                            res.json(accessToken);
+                        }
                     } else {
-                        res.json({ err: 2 })
+                        res.json({ err: 1 })
                     }
                 })
             }
@@ -320,7 +387,7 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/customers', validateToken , (req, res) => {
-    db.query('SELECT * FROM khachhang JOIN taikhoan ON taikhoan.email = khachhang.email', (err, data) => {
+    db.query('SELECT khachhang.makh,khachhang.hoten,khachhang.sodienthoai,taikhoan.email, taikhoan.status , taikhoan.role FROM khachhang JOIN taikhoan ON taikhoan.email = khachhang.email', (err, data) => {
         if (err) throw err;
         else res.json(data);
     })

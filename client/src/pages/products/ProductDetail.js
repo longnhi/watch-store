@@ -1,15 +1,18 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
 import { Link, useNavigate, useParams} from 'react-router-dom'
+import ButtonFavorite from '../../components/favorite/ButtonFavorite';
+import {API} from '../../config/API';
 
 
 const ProductDetail = () => {
     let { masp } = useParams();
     const [product,setProduct] = useState({});
+    const [textFavorite,setTextFavorite] = useState("YÊU THÍCH");
     let navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/products/${masp}`).then((res) => { 
+        axios.get(`${API}products/${masp}`).then((res) => { 
             if (res.data.length === 0){
                 navigate(`NOT_FOUND`);
             }  else {
@@ -31,15 +34,6 @@ const ProductDetail = () => {
         window.location.reload();
     };
 
-    const addFavorite = () => {
-        let item = localStorage.getItem('accessToken');
-        if(!item){
-            navigate("/login",{ replace: true });
-        }else {
-            //navigate("/favorite",{ replace: true });
-        }
-    };
-
     return (
         <>
             <div className="row g-0 bg-light position-relative">
@@ -59,11 +53,18 @@ const ProductDetail = () => {
                         <p className="card-text">Giới tính: {product.gioitinh===1 ? "Nam": "Nữ"}</p>
                         <p className="card-text">Bảo hành: {product.baohanh}</p>
                         <p className="card-text">Mô tả: {product.mota}</p>
-                        
+                        {product.soluong === 0 ? <p className="card-text text-danger">Sản phẩm đang hết hàng</p> : <p className="card-text">Số lượng:  {product.soluong}</p>}
+                        {product.trangthai === 0 && <p className="card-text text-danger">Sản phẩm không còn kinh doanh tại cửa hàng</p>}
                         </div>
                         <div className="card-footer text-muted d-flex justify-content-center">
+                        {product.trangthai===0 || product.soluong === 0 ? (
+                            <button className="card-link btn btn-light link-dark disabled">
+                                <i className="fa fa-cart-plus fa-2x"/>&ensp;GIỎ HÀNG
+                            </button>
+                        ):(
                             <button onClick={() => {addToCart()}} className="card-link btn link-dark"><i className="fa fa-cart-plus fa-2x"/>&ensp;GIỎ HÀNG</button>
-                            <button onClick={() => {addFavorite()}} className="card-link btn link-dark"><i className="fa fa-heart-o fa-2x" />&ensp;YÊU THÍCH</button>
+                        )}
+                            <ButtonFavorite masp={masp} textFavorite={textFavorite} setTextFavorite={setTextFavorite} />
                         </div>
                     </div>
                 </div>

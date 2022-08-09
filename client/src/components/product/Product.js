@@ -1,10 +1,11 @@
 import React from 'react'
 import {Link, useNavigate} from 'react-router-dom';
+import ButtonFavorite from '../favorite/ButtonFavorite';
 
 const Product = (props) => {
     let product = props.product;
     let navigate = useNavigate();
-
+    
     const addToCart = () => {
         let cart = localStorage.getItem('cart')  ? JSON.parse(localStorage.getItem('cart')) : [];
         let cartItem = cart.find(item => item.product.masp === parseInt(props.product.masp));
@@ -15,16 +16,6 @@ const Product = (props) => {
         }
         localStorage.setItem('cart', JSON.stringify(cart));
         navigate('/cart',{replace: true});
-        //window.location.reload();
-    };
-
-    const addFavorite = () => {
-        let item = localStorage.getItem('accessToken');
-        if(!item){
-            navigate("/login",{ replace: true });
-        }else {
-            //navigate("/favorite",{ replace: true });
-        }
     };
 
     return (
@@ -42,12 +33,21 @@ const Product = (props) => {
                         <p className="card-text text-truncate">{product.mota}</p>
                     </div>
                     <ul className="list-group list-group-flush">
-                        <li className="list-group-item">Giá: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.gia)}</li>
+                        {product.soluong===0 &&<li className="list-group-item text-danger"> Sản phẩm đang hết hàng</li>} 
+                        {product.soluong!==0 && <li className="list-group-item">Giá: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.gia)}</li>}
                     </ul>
                     <div className="card-body d-flex justify-content-around">
-                        <button onClick={() => {addToCart()}} className="card-link btn link-dark"><i className="fa fa-cart-plus fa-2x"/></button>
+                        {product.trangthai===0 || product.soluong === 0 ? (
+                            <button onClick={() => {addToCart()}} className="card-link btn btn-light link-dark disabled">
+                                <i className="fa fa-cart-plus fa-2x"/>
+                            </button>
+                        ):(
+                            <button onClick={() => {addToCart()}} className="card-link btn link-dark">
+                                <i className="fa fa-cart-plus fa-2x"/>
+                            </button>
+                        )}
                         <button onClick={() => {navigate(`/products/${product.masp}`,{replace:true})}} className="card-link btn link-dark"><i className="fa fa-search fa-2x" /></button>
-                        <button onClick={() => {addFavorite()}} className="card-link btn link-dark"><i className="fa fa-heart-o fa-2x" /></button>
+                        <ButtonFavorite masp={product.masp} />
                     </div>
                 </div>
             </div>

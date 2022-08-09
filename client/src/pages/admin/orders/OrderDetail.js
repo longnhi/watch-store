@@ -69,8 +69,8 @@ const OrderDetail = () => {
                       </tr>
                   </thead>
                   <tbody >
-                      {listOrderDetail.map((orderDetail) =>{
-                        return (<tr key={orderDetail.mactdh}>
+                      {listOrderDetail.map((orderDetail,index) =>{
+                        return (<tr key={index}>
                           <ProductOrderDetail masp={orderDetail.masp} />
                           <td>
                             {orderDetail.soluong}
@@ -90,10 +90,38 @@ const OrderDetail = () => {
             </div>
             <div className="card-footer text-center">
               <div className="justify-content-center ">
-                <Link to="/admin/orders" className="btn btn-outline-primary m-2">Giao hàng</Link>
-                <Link to="/admin/orders" className="btn btn-outline-primary m-2">Hủy đơn</Link>
-                <Link to="/admin/orders" className="btn btn-outline-primary m-2">Hoàn tất</Link>
-                <Link to="/admin/orders" className="btn btn-outline-primary m-2">Thoát</Link>
+                {order.trangthai === "Đã hủy" && 
+                  <>
+                    <button  className="btn btn-outline-primary m-2 disabled">Giao hàng</button>
+                    <button  className="btn btn-outline-primary m-2 disabled">Hủy đơn</button>
+                    <button  className="btn btn-outline-primary m-2 disabled">Hoàn tất</button>
+                    <Link to="/admin/orders"  className="btn btn-outline-primary m-2">Thoát</Link>
+                  </>
+                }
+                {order.trangthai === "Đang xử lý" && 
+                  <>
+                    <button  className="btn btn-outline-primary m-2">Giao hàng</button>
+                    <button  className="btn btn-outline-primary m-2">Hủy đơn</button>
+                    <button  className="btn btn-outline-primary m-2 disabled">Hoàn tất</button>
+                    <Link to="/admin/orders"  className="btn btn-outline-primary m-2">Thoát</Link>
+                  </>
+                }
+                {order.trangthai === "Đang vận chuyển" &&  
+                  <>
+                    <button className="btn btn-outline-primary m-2 disabled">Giao hàng</button>
+                    <button className="btn btn-outline-primary m-2">Hủy đơn</button>
+                    <button className="btn btn-outline-primary m-2">Hoàn tất</button>
+                    <Link to="/admin/orders" className="btn btn-outline-primary m-2">Thoát</Link>
+                  </>
+                }
+                {order.trangthai === "Hoàn tất" && 
+                  <>
+                    <button className="btn btn-outline-primary m-2 disabled">Giao hàng</button>
+                    <button className="btn btn-outline-primary m-2 disabled">Hủy đơn</button>
+                    <button className="btn btn-outline-primary m-2 disabled">Hoàn tất</button>
+                    <Link to="/admin/orders" className="btn btn-outline-primary m-2">Thoát</Link>
+                  </>
+                }
               </div>
             </div>
           </div>

@@ -8,7 +8,7 @@ const ListProduct = () => {
   const [listProduct, setListProduct] = useState([]);
 
   useEffect(() => {
-    axios.get(`${API}products`).then((res) => { 
+    axios.get(`${API}allproducts`).then((res) => { 
       setListProduct(res.data);
   });
   },[]);

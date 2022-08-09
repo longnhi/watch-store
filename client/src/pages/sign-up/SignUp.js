@@ -3,6 +3,8 @@ import Axios from "axios";
 import './signup.css'
 import { useNavigate, Navigate } from "react-router-dom";
 import { AuthContext } from '../../context/AuthContext';
+import {API} from '../../config/API';
+
 
 const SignUp = () => {
 
@@ -22,7 +24,7 @@ const SignUp = () => {
 
     const register = (event) => {
         event.preventDefault();
-        Axios.post("http://localhost:3001/register", {
+        Axios.post(`${API}register`, {
             email: email,
             password: password,
             hoten: hoten,
