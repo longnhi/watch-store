@@ -35,7 +35,8 @@ const ProductDetailAdmin = () => {
                     <p className="card-text">Giới tính: {product.gioitinh===1 ? "Nam": "Nữ"}</p>
                     <p className="card-text">Bảo hành: {product.baohanh}</p>
                     <p className="card-text">Mô tả: {product.mota}</p>
-                    
+                    <p className="card-text">Số lượng: {product.soluong}</p>
+                    <p className="card-text">Trạng thái: {product.trangthai===1?"Đang bán":"Ngừng bán"}</p>
                     </div>
                     <div className="card-footer text-muted d-flex justify-content-center">
                         <Link to="/admin/products" className="btn btn-outline-primary">THOÁT</Link>

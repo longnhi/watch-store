@@ -6,6 +6,7 @@ import {API} from '../../../config/API';
 const ListProduct = () => {
 
   const [listProduct, setListProduct] = useState([]);
+  const [maspState, setMaspState] = useState("");
 
   useEffect(() => {
     axios.get(`${API}allproducts`).then((res) => { 
@@ -30,7 +31,7 @@ const ListProduct = () => {
   };
 
   return (
-    <div >
+    <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 className="h2">Quản lý sản phẩm</h1>
         <div className="btn-toolbar mb-2 mb-md-0">
@@ -65,14 +66,54 @@ const ListProduct = () => {
                   <td>{product.gioitinh === 1 ? "Nam" : "Nữ"}</td>
                   <td><Link className="btn" to={`/admin/products/detail/${product.masp}`}><i className="fa fa-eye"  /></Link></td>
                   <td><Link className="btn" to={`/admin/products/edit/${product.masp}`}><i className="fa fa-pencil"  /></Link></td>
-                  <td><button className="btn" onClick={()=>{deleteProduct(product.masp)}}><i className="fa fa-trash"/></button></td>
+                  <td><button className="btn" type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal" onClick={()=>{setMaspState(product.masp)}} ><i className="fa fa-trash"/></button></td>
                 </tr>
               )
             })}
           </tbody>
         </table>
       </div>
-    </div>
+
+      {/*Modal*/}
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex={-1}
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Xác nhận
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body">Bạn có muốn sửa sản phẩm này không</div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Không
+              </button>
+              <button type="button" onClick={()=>{deleteProduct(maspState)}} className="btn btn-primary" data-bs-dismiss="modal">
+                Có
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 

@@ -34,6 +34,7 @@ import ProductDetailAdmin from './pages/admin/products/ProductDetailAdmin';
 import { AuthContext } from "./context/AuthContext";
 import axios from 'axios';
 import { API } from './config/API';
+import Transport from './pages/admin/orders/Transport';
 
 function App() {
 
@@ -92,48 +93,49 @@ function App() {
   return (
     <div className="App">
       <AuthContext.Provider value={{ authState, setAuthState ,customerState }}>
-      <Suspense fallback={<div>Loading...</div>}>
-      <Routes>
-        <Route path="/" element={(authState.isLogin===true && authState.role === "admin")?<Navigate to="/admin" replace={ true } />:<Main />}>
-          <Route index element={<Home />} />
-          <Route path="products" element={<Products />} />
-          <Route path="products/:masp" element={<ProductDetail />} />
-          <Route path="products/brand/:math" element={<ProductByBrand />} />
-          <Route path="products/category/:maloai" element={<ProductByCategory />} />
-          <Route path="products/price/:price" element={<ProductByPrice/>}/>
-          <Route path="search/:name" element={<SearchProduct />} />
-          <Route path="cart" element={<Cart />} />
-          <Route path="lienhe" element={<Lienhe />} />
-          <Route path="login" element={<SignIn />} />
-          <Route path="registry" element={<SignUp />}/>
-          { authState.isLogin===true && 
-            <>
-              <Route path="favorite" element={<Favorite />} />
-              <Route path="order" element={<Order />} />
-              <Route path="order/:madh" element={<OrderDetail />} />
-              <Route path="checkout" element={<CheckOut />} />
-            </>
-          }
-        </Route>
-        
-        <Route path="admin" element={authState.isLogin===true && authState.role==="admin" ? <HomeAdmin /> : <Navigate to="/" replace={ true } />} >
-          <Route path="" element={<MainAdmin />}/>
-          <Route path="brands" element={<ListBrand/>} />
-          <Route path="brands/add" element={<CreateBrand />} />
-          <Route path="brands/edit/:math" element={<UpdateBrand />} />
-          <Route path="products" element={<ListProduct/>} />
-          <Route path="products/add" element={<CreateProduct />} />
-          <Route path="products/edit/:masp" element={<UpdateProduct />} />
-          <Route path="products/detail/:masp" element={<ProductDetailAdmin />} />
-          <Route path="orders" element={<ListOrder/>} />
-          <Route path="orders/detail/:madh" element={<OrderDetails />} />
-          <Route path="customers" element={<ListCustomer/>} />
-          <Route path="guarantees" element={<ListGuarantee/>} />
-          <Route path="guarantees/create" element={<CreateGuarantee />} />
-        </Route>
-        <Route path="*" element={<Error />} />
-      </Routes>
-      </Suspense>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/" element={(authState.isLogin===true && authState.role === "admin")?<Navigate to="/admin" replace={ true } />:<Main />}>
+              <Route index element={<Home />} />
+              <Route path="products" element={<Products />} />
+              <Route path="products/:masp" element={<ProductDetail />} />
+              <Route path="products/brand/:math" element={<ProductByBrand />} />
+              <Route path="products/category/:maloai" element={<ProductByCategory />} />
+              <Route path="products/price/:price" element={<ProductByPrice/>}/>
+              <Route path="search/:name" element={<SearchProduct />} />
+              <Route path="cart" element={<Cart />} />
+              <Route path="lienhe" element={<Lienhe />} />
+              <Route path="login" element={<SignIn />} />
+              <Route path="registry" element={<SignUp />}/>
+              { authState.isLogin===true && 
+                <>
+                  <Route path="favorite" element={<Favorite />} />
+                  <Route path="order" element={<Order />} />
+                  <Route path="order/:madh" element={<OrderDetail />} />
+                  <Route path="checkout" element={<CheckOut />} />
+                </>
+              }
+            </Route>
+            
+            <Route path="admin" element={<HomeAdmin />} >
+              <Route path="" element={authState.isLogin === true && authState.role==="admin" ? <MainAdmin /> : <Navigate to="/" replace={ true } />}/>
+              <Route path="brands" element={<ListBrand/>} />
+              <Route path="brands/add" element={<CreateBrand />} />
+              <Route path="brands/edit/:math" element={<UpdateBrand />} />
+              <Route path="products" element={<ListProduct/>} />
+              <Route path="products/add" element={<CreateProduct />} />
+              <Route path="products/edit/:masp" element={<UpdateProduct />} />
+              <Route path="products/detail/:masp" element={<ProductDetailAdmin />} />
+              <Route path="orders" element={<ListOrder/>} />
+              <Route path="orders/detail/:madh" element={<OrderDetails />} />
+              <Route path="order/transport/:madh" element={<Transport />}/>
+              <Route path="customers" element={<ListCustomer/>} />
+              <Route path="guarantees" element={<ListGuarantee/>} />
+              <Route path="guarantees/create" element={<CreateGuarantee />} />
+            </Route>
+            <Route path="*" element={<Error />} />
+          </Routes>
+        </Suspense>
       </AuthContext.Provider>
     </div>
   );

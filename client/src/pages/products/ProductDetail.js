@@ -35,7 +35,14 @@ const ProductDetail = () => {
     };
 
     return (
-        <>
+        <div className="container my-4">
+            <nav aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                <li className="breadcrumb-item"><Link to="/">Trang chủ</Link></li>
+                <li className="breadcrumb-item"><Link to="/products">Sản phẩm</Link></li>
+                <li className="breadcrumb-item active" aria-current="page">{product.tensp}</li>
+                </ol>
+            </nav>
             <div className="row g-0 bg-light position-relative">
                 <div className="col-md-6 mb-md-0 p-md-4">
                 <img src={process.env.PUBLIC_URL + "/assets/img/products/" + product.hinhanh} className="w-100" alt="..." />
@@ -69,7 +76,7 @@ const ProductDetail = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

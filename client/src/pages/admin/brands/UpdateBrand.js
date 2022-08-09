@@ -46,8 +46,52 @@ const UpdateBrand = () => {
               <label htmlFor="tenth">Tên thương hiệu</label>
           </div>
         
-          <button className="w-100 btn btn-lg btn-outline-primary mb-3">Sửa</button>
+          <button 
+            className="w-100 btn btn-lg btn-outline-primary mb-3"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Sửa
+          </button>
         </form>
+      </div>
+      {/*Model*/}
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex={-1}
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Xác nhận
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body">Bạn có muốn sửa thương hiệu này không</div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Không
+              </button>
+              <button type="button" onClick={onSubmit} className="btn btn-primary" data-bs-dismiss="modal">
+                Có
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   )

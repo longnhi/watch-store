@@ -249,7 +249,7 @@ app.put('/productnoimage/:masp', validateToken, (req, res) => {
 
 app.delete('/product/:masp', validateToken, (req, res)=>{
     const masp = req.params.masp;
-    db.query("DELETE FROM sanpham where masp=?",  masp , (err, result)=>{
+    db.query("DELETE FROM sanpham where masp = ? ", masp , (err, result)=>{
         if (err) { res.json({ errCode:1}); }
         else res.json(result);
     })
@@ -527,6 +527,51 @@ app.get('/order/detail/:madh', validateToken, (req, res) => {
     } catch (error) {
         console.log(error);
     }
+})
+
+app.put('/order/handle/cancel', validateToken, (req, res) => {
+    let madh = req.body.madh;
+    db.query("UPDATE donhang SET trangthai = 'Đã hủy' where madh = ?", madh, (err, result) => {
+        if (err) { console.log(err); }
+        else {res.json(result);}
+    })
+})
+
+app.put('/order/handle/complete', validateToken, (req, res) => {
+    let madh = req.body.madh;
+    db.query("UPDATE donhang SET trangthai = 'Hoàn tất' where madh = ?", madh, (err, result) => {
+        if (err) { console.log(err) }
+        else {res.json(result)}
+    })
+})
+
+app.put('/order/handle/shipping', validateToken, (req, res) => {
+    let madh = req.body.madh;
+    db.query("SELECT * FROM chitietdonhang where madh = ?", madh, (err, data) => {
+        for (let i = 0; i < data.length; i++) {
+            db.query("UPDATE sanpham SET soluong = soluong - ? where masp = ?",[data[i].soluong,data[i].masp], (err, response) => {
+
+            })
+        }
+        db.query("UPDATE donhang SET trangthai = 'Đang vận chuyển' where madh = ?", madh, (err, result) => {
+            if (err) { console.log(err); }
+            else {res.json(result);}
+        })
+    });
+})
+
+app.put('/order/handle/revoke', validateToken, (req, res) => {
+    let madh = req.body.madh;
+    db.query("SELECT * FROM chitietdonhang where madh = ?", madh, (err, data) => {
+        for (let i = 0; i < data.length; i++) {
+            db.query("UPDATE sanpham SET soluong = soluong + ? where masp = ?",[data[i].soluong,data[i].masp], (err, response) => {
+            })
+        }
+        db.query("UPDATE donhang SET trangthai = 'Đã hủy' where madh = ?", madh, (err, result) => {
+            if (err) { console.log(err); }
+            else {res.json(result);}
+        })
+    });
 })
 
 app.listen(3001, () => {

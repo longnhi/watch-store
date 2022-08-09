@@ -41,6 +41,26 @@ const OrderDetail = () => {
         });
     },[madh]);
 
+    const handleCancel = () => {
+        axios.put(`${API}order/handle/cancel`,{madh:madh},{
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }).then((response) => {
+          setOrder({...order,trangthai: "Đã hủy"})
+        });
+    };
+
+    const handleComplete = () => {
+        axios.put(`${API}order/handle/complete`,{madh:madh},{
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }).then((response) => {
+          setOrder({...order,trangthai: "Hoàn tất"})
+        });
+    };
+
     return (
         <div className="container my-4">
             <nav aria-label="breadcrumb">
@@ -89,8 +109,11 @@ const OrderDetail = () => {
                     </table>
                 </div>
                 </div>
-                <div className="card-footer text-muted text-center">
-                    {order.trangthai==="Đang xử lý"?(<a className='btn btn-primary ' href='/'>Hủy đơn</a>):(<a disabled className='btn btn-primary disabled' href='/'>Hủy đơn</a>)}
+                <div className="card-footer text-center">
+                    <div className="d-flex justify-content-center">
+                        {order.trangthai === "Đang xử lý"?(<button className="card-link btn btn-outline-primary my-2" onClick={handleCancel}>Hủy đơn</button>):(<button className="card-link btn btn-outline-primary my-2 disabled">Hủy đơn</button>)}
+                        {order.trangthai === "Đang vận chuyển" ? (<button className="card-link btn btn-outline-primary my-2" onClick={handleComplete}>Hoàn tất</button>):(<button className="card-link btn btn-outline-primary my-2 disabled">Hoàn tất</button>)}
+                    </div>
                 </div>
             </div>
         </div>

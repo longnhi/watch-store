@@ -30,7 +30,7 @@ const ProductByBrand = () => {
                 </ol>
             </nav>
             <>
-                { listProduct.length === 0 ? (<div className='text-center'>Không tìm thấy sản phẩm nào</div>) : 
+                { listProduct.length === 0 ? (<></>) : 
                 (
                     <ProductList listProduct={listProduct} />
                 )}

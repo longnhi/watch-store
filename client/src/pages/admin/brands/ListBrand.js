@@ -6,6 +6,7 @@ import {API} from '../../../config/API'
 const ListBrand = () => {
 
   const [listBrand, setListBrand] = useState([]);
+  const [math, setMath] = useState("");
 
   useEffect(() => {
     axios.get(`${API}brands`).then((res) => { 
@@ -56,12 +57,59 @@ const ListBrand = () => {
                   <td>{brand.math}</td>
                   <td>{brand.tenth}</td>
                   <td><Link className="btn" to={`/admin/brands/edit/${brand.math}`}><i className="fa fa-pencil"/></Link></td>
-                  <td><button className="btn" onClick={()=>{deleteBrand(brand.math)}}><i className="fa fa-trash"/></button></td>
+                  <td>
+                    <button 
+                      className="btn" 
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      onClick={() => setMath(brand.math)}
+                    >
+                      <i className="fa fa-trash"/>
+                    </button>
+                  </td>
                 </tr>
               )
             })}
           </tbody>
         </table>
+      </div>
+
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex={-1}
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Xác nhận
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body">Bạn có muốn xóa thương hiệu này không</div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Không
+              </button>
+              <button type="button" onClick={()=>{deleteBrand(math)}} className="btn btn-primary" data-bs-dismiss="modal">
+                Có
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   )
